@@ -26,7 +26,7 @@ const [tipoChave, setTipoChave] = useState("CPF");
                 </h2>
 
                 <p className="mt-4 text-base text-gray-700">
-                    Taxa: R$ 5,00. Valor mínimo: R$ 35,00.
+                    Valor mínimo: R$ 35,00.
                 </p>
 
                 {/* Valor */}
@@ -37,7 +37,7 @@ const [tipoChave, setTipoChave] = useState("CPF");
 
                     <input
                         type="number"
-                        defaultValue="35"
+                        placeholder="35"
                         className="w-full bg-transparent px-3 py-3 outline-none"
                     />
                 </div>
@@ -61,7 +61,6 @@ const [tipoChave, setTipoChave] = useState("CPF");
 
                         <input
                             type="text"
-                            defaultValue="41362412830"
                             className="flex-1 px-3 py-3 outline-none"
                         />
 
