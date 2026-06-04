@@ -3,99 +3,81 @@ import CardVoltar from "../components/CardVoltar";
 import Header from "../components/Header";
 
 export default function Cotacao() {
-  const cotacoes = [
+  const modalidades = [
     {
-      titulo: "Milhar",
-      valor: "1x R$ 4.000,00",
-      
-    },
-    {
-      titulo: "Centena",
-      valor: "1x R$ 600,00",
-      mostrarCotacoes: true,
+      nome: "Milhar",
+      cotacao: 4000,
     },
     {
-      titulo: "Dezena",
-      valor: "1x R$ 50,00",
-      mostrarCotacoes: true,
-    },
-        {
-      titulo: "Unidade",
-      valor: "1x R$ 5,00",
-      
+      nome: "Centena",
+      cotacao: 600,
     },
     {
-      titulo: "Grupo",
-      valor: "1x R$ 16,00",
-      mostrarCotacoes: true,
+      nome: "Dezena",
+      cotacao: 50,
     },
     {
-      titulo: "Duque",
-      valor: "1x R$ 200,00",
-      mostrarCotacoes: true,
-    },
-        {
-      titulo: "Terno de Dezena",
-      valor: "1x R$ 4.000,00",
-      mostrarCotacoes: false,
+      nome: "Unidade",
+      cotacao: 5,
     },
     {
-      titulo: "Terno 1º ao 5º",
-      valor: "1x R$ 100,00",
-      mostrarCotacoes: true,
+      nome: "Grupo",
+      cotacao: 16,
     },
     {
-      titulo: "Terno seco Esp",
-      valor: "1x R$ 1.000,00",
-      mostrarCotacoes: true,
-    },
-        {
-      titulo: "Passe",
-      valor: "1x R$ 80,00",
-      mostrarCotacoes: false,
+      nome: "Duque",
+      cotacao: 200,
     },
     {
-      titulo: "Passe V. V.",
-      valor: "1x R$ 40,00",
-      mostrarCotacoes: true,
+      nome: "Terno de Dezena",
+      cotacao: 4000,
     },
     {
-      titulo: "Quina",
-      valor: "1x R$ 1.000,00",
-      mostrarCotacoes: true,
-    },    {
-      titulo: "Quadra",
-      valor: "1x R$ 100,00",
-      mostrarCotacoes: false,
+      nome: "Terno 1º ao 5º",
+      cotacao: 100,
     },
     {
-      titulo: "Terno",
-      valor: "1x R$ 10,00",
-      mostrarCotacoes: true,
+      nome: "Terno Seco Especial",
+      cotacao: 1000,
+    },
+    {
+      nome: "Passe",
+      cotacao: 80,
+    },
+    {
+      nome: "Passe V.V.",
+      cotacao: 40,
+    },
+    {
+      nome: "Quina",
+      cotacao: 1000,
+    },
+    {
+      nome: "Quadra",
+      cotacao: 100,
+    },
+    {
+      nome: "Terno",
+      cotacao: 10,
     },
   ];
 
   return (
-    <div className="bg-[#f5f7fc]">
+    <div className="min-h-screen bg-[#f5f7fb]">
       <Header />
 
       <CardVoltar
-        title="Valor dos prêmios"
+        title="Cotação"
         to="/"
       />
 
-      <div className="space-y-4 p-4">
-        {cotacoes.map((cotacao) => (
-          <CardCotacao
-            key={cotacao.titulo}
-            titulo={cotacao.titulo}
-            valor={cotacao.valor}
-            mostrarCotacoes={cotacao.mostrarCotacoes}
-            onJogar={() =>
-              console.log(cotacao.titulo)
-            }
-          />
-        ))}
+      <div className="px-4 py-6">
+        <CardCotacao
+          modalidades={modalidades}
+          onJogar={() =>
+            console.log("Ir para aposta")
+          }
+        />
       </div>
     </div>
   );

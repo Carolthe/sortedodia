@@ -115,7 +115,7 @@ export default function CardFormularioPalpite() {
                 </label>
 
                 <input
-                  type="number"
+                  type=""
                   name="valorOutro"
                   value={form.valorOutro}
                   onChange={handleChange}
