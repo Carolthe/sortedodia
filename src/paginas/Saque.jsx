@@ -13,15 +13,15 @@ const [tipoChave, setTipoChave] = useState("CPF");
     return (
         <>
             <Header />
-            <div className="bg-[#ececec] ">
+            <div className=" ">
                 <CardVoltar title="Faça o seu saque"/>
-                <div className="bg-[#fbf8f8] mt-[15px] py-[10px]">
+                <div className=" mt-[15px] py-[10px]">
                     <CardSaldo saldo="R$ 0,00" />
                 </div>
 
             </div>
-            <div className="w-full rounded-2xl bg-gray-100 p-4 shadow-sm">
-                <h2 className="text-2xl font-medium text-gray-800">
+            <div className="w-full rounded-2xl  p-4 shadow-sm">
+                <h2 className="text-[18px] font-medium text-gray-800">
                     Saque
                 </h2>
 
@@ -47,7 +47,7 @@ const [tipoChave, setTipoChave] = useState("CPF");
                     <select
                         value={tipoChave}
                         onChange={(e) => setTipoChave(e.target.value)}
-                        className="w-28 rounded-2xl border border-blue-300 bg-blue-50 px-3 py-3 text-gray-800 outline-none"
+                        className="w-28 rounded-2xl border border-[#062272] bg-blue-50 px-3 py-3 text-gray-800 outline-none"
                     >
                         <option>CPF</option>
                         <option>Telefone</option>
@@ -77,11 +77,11 @@ const [tipoChave, setTipoChave] = useState("CPF");
           w-full
           rounded-2xl
           border
-          border-blue-300
+          border-[#062272]
           bg-white
           py-3
           font-semibold
-          text-blue-500
+          text-[#062272]
           transition
           hover:bg-blue-50
         "
