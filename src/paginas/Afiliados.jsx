@@ -91,12 +91,6 @@ export default function Afiliados() {
             </h2>
 
             <div>
-              <label
-                htmlFor="divulgacao"
-                className="mb-2 block text-base font-semibold text-gray-700"
-              >
-                Como pretende divulgar?
-              </label>
 
               <textarea
                 id="divulgacao"

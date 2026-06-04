@@ -1,10 +1,18 @@
+import { useState } from "react";
 import Header from "../components/Header";
 import CardVoltar from "../components/CardVoltar";
 
 export default function Pix() {
-  const valor = 49.90;
+  const [valor, setValor] = useState("");
 
   const handlePagamento = async () => {
+    const valorNumerico = Number(valor);
+
+    if (!valorNumerico || valorNumerico < 10) {
+      alert("O valor mínimo para recarga é R$ 10,00");
+      return;
+    }
+
     try {
       const response = await fetch(
         "http://localhost:3000/api/pagamentos/criar-preferencia",
@@ -14,8 +22,8 @@ export default function Pix() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            produto: "Plano Premium",
-            valor,
+            produto: "Recarga de Saldo",
+            valor: valorNumerico,
           }),
         }
       );
@@ -27,7 +35,7 @@ export default function Pix() {
       }
     } catch (error) {
       console.error(error);
-      alert("Erro ao iniciar pagamento");
+      alert("Ainda não disponivel");
     }
   };
 
@@ -35,69 +43,54 @@ export default function Pix() {
     <div className="min-h-screen bg-gray-50">
       <Header />
 
-      <CardVoltar title="Pagamento" />
+      <CardVoltar title="Recarregar seu Saldo" />
 
       <div className="max-w-lg mx-auto px-4 py-6">
-        <h1 className="text-2xl font-bold text-center text-[#001A72]">
-          Finalizar Compra
+        <h1 className="text-2xl font-bold text-center text-[#001A72] mb-6">
+          Qual o valor da recarga?
         </h1>
 
-        <p className="text-center text-gray-500 mt-2">
-          Revise os dados antes de concluir o pagamento.
-        </p>
+        <div className="bg-white p-6 rounded-2xl shadow-md">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Valor mínimo: R$ 10,00
+          </label>
 
-        <div className="bg-white rounded-3xl shadow-sm border p-6 mt-8">
-          <h2 className="text-lg font-semibold">
-            Resumo do Pedido
-          </h2>
+          <input
+            type="number"
+            placeholder="Ex: 50"
+            value={valor}
+            onChange={(e) => setValor(e.target.value)}
+            className="
+              w-full
+              h-12
+              px-4
+              rounded-xl
+              border
+              border-gray-300
+              focus:outline-none
+              focus:ring-2
+              focus:ring-[#062272]
+            "
+          />
 
-          <div className="mt-6 flex justify-between">
-            <span className="text-gray-600">
-              Plano Premium
-            </span>
-
-            <span className="font-semibold">
-              R$ {valor.toFixed(2)}
-            </span>
-          </div>
-
-          <div className="my-5 border-t"></div>
-
-          <div className="flex justify-between items-center">
-            <span className="text-xl font-bold">
-              Total
-            </span>
-
-            <span className="text-2xl font-bold text-green-600">
-              R$ {valor.toFixed(2)}
-            </span>
-          </div>
+          <button
+            onClick={handlePagamento}
+            className="
+              mt-6
+              w-full
+              h-12
+              rounded-xl
+              bg-[#062272]
+              text-white
+              text-lg
+              font-bold
+              transition
+              hover:brightness-95
+            "
+          >
+            Recarregar via Pix
+          </button>
         </div>
-
-        <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 mt-6">
-          <p className="text-sm text-blue-700">
-            Você será redirecionado para o ambiente seguro do
-            Mercado Pago para concluir sua compra.
-          </p>
-        </div>
-
-        <button
-          onClick={handlePagamento}
-          className="
-            mt-8
-            w-full
-            h-14
-            rounded-3xl
-            bg-[#009EE3]
-            text-white
-            text-lg
-            font-bold
-            transition
-            hover:brightness-95
-          "
-        >
-          Pagar com Mercado Pago
-        </button>
       </div>
     </div>
   );

@@ -31,7 +31,7 @@ export default function CardCotacao({
         </h2>
 
         <p className="mt-2 text-center text-sm text-slate-500">
-          Escolha uma modalidade e informe o valor.
+          Escolha uma modalidade e informe o valor
         </p>
 
         {/* Modalidade */}
