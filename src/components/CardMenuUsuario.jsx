@@ -35,15 +35,15 @@ export default function CardMenuUsuario() {
               Bônus de fidelidade
             </p>
 
-            <button className="font-semibold text-[#FFB000]">
+            {/* <button className="font-semibold text-[#FFB000]">
               Saiba mais
-            </button>
+            </button> */}
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           <span className="text-xl font-bold">
-            0 / 5
+            10%
           </span>
 
           <Star
