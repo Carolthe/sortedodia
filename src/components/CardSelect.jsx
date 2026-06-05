@@ -8,7 +8,7 @@ export default function CardSelect({
 }) {
   return (
     <div className="w-full overflow-hidden">
-      <label className="mb-1.5 block text-sm font-medium text-slate-700">
+      <label className="mb-1.5 block text-[16px] font-medium text-slate-700">
         {label}
       </label>
 

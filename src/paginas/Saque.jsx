@@ -20,7 +20,8 @@ const [tipoChave, setTipoChave] = useState("CPF");
                 </div>
 
             </div>
-            <div className="w-full rounded-2xl  p-4 shadow-sm">
+            <div className="flex justify-center" >
+            <div className=" w-[90%] rounded-2xl   p-4 shadow-sm">
                 <h2 className="text-[18px] font-medium text-gray-800">
                     Saque
                 </h2>
@@ -78,16 +79,17 @@ const [tipoChave, setTipoChave] = useState("CPF");
           rounded-2xl
           border
           border-[#062272]
-          bg-white
+          bg-[#062272]
           py-3
           font-semibold
-          text-[#062272]
+          text-[#ffff]
           transition
           hover:bg-blue-50
         "
                 >
                     Efetuar saque
                 </button>
+            </div>
             </div>
         </>
     )

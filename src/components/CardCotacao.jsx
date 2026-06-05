@@ -127,7 +127,7 @@ export default function CardCotacao({
                 Total
               </span>
 
-              <span className="text-2xl font-bold text-green-600">
+              <span className="text-[20px] font-bold text-green-600">
                 R$ {ganho.toFixed(2)}
               </span>
             </div>

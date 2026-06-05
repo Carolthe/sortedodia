@@ -6,7 +6,7 @@ export default function Carousel() {
   const images = [
     "https://res.cloudinary.com/do4p13i1a/image/upload/v1779991972/bannergrupo_a1knzs.png",
     "https://res.cloudinary.com/do4p13i1a/image/upload/v1779993687/bannermilhar_rdbqqm.png",
-    "https://res.cloudinary.com/do4p13i1a/image/upload/v1780400195/pt_m34f1s.png",
+    "https://res.cloudinary.com/do4p13i1a/image/upload/v1780653713/rc_gtq4lh.png",
   ]
 
   const nextSlide = () => {

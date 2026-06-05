@@ -8,7 +8,7 @@ export default function Afiliados() {
 
       <CardVoltar title="Ser Afiliado" />
 
-      <div className="px-4 py-6 max-w-2xl mx-auto">
+      <div className="px-[25px] py-6 max-w-2xl mx-auto">
         <h1 className="text-xl font-semibold text-center">
           Se tornar um afiliado
         </h1>
@@ -21,7 +21,7 @@ export default function Afiliados() {
         <form className="mt-[15px] flex flex-col gap-[20px]">
           {/* Contato */}
           <div className="w-full">
-            <h2 className="mb-[10px] text-xl font-bold text-blue-600">
+            <h2 className="mb-[10px] text-xl font-bold text-[#062272]">
               Contato
             </h2>
 
@@ -41,7 +41,7 @@ export default function Afiliados() {
                   className="
                     w-full
                     h-12
-                    rounded-3xl
+                    rounded-[15px]
                     border
                     border-gray-400
                     px-5
@@ -49,7 +49,7 @@ export default function Afiliados() {
                     text-gray-700
                     outline-none
                     transition
-                    focus:border-blue-500
+                    focus:border-[#062272]
                   "
                 />
               </div>
@@ -69,7 +69,7 @@ export default function Afiliados() {
                   className="
                     w-full
                     h-12
-                    rounded-3xl
+                    rounded-[15px]
                     border
                     border-gray-400
                     px-5
@@ -77,7 +77,7 @@ export default function Afiliados() {
                     text-gray-700
                     outline-none
                     transition
-                    focus:border-blue-500
+                    focus:border-[#062272]
                   "
                 />
               </div>
@@ -86,7 +86,7 @@ export default function Afiliados() {
 
           {/* Divulgação */}
           <div className="w-full">
-            <h2 className="mb-4 text-xl font-bold text-blue-600">
+            <h2 className="mb-4 text-xl font-bold text-[#062272]">
               Como pretende divulgar?
             </h2>
 
@@ -99,7 +99,7 @@ export default function Afiliados() {
                 className="
                   w-full
                   resize-none
-                  rounded-3xl
+                  rounded-[15px]
                   border
                   border-gray-400
                   p-4
@@ -120,7 +120,7 @@ export default function Afiliados() {
                   w-full
                   sm:w-[320px]
                   h-14
-                  rounded-3xl
+                  rounded-[15px]
                   bg-[#FFA500]
                   text-lg
                   font-bold

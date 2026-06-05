@@ -110,7 +110,7 @@ export default function CardFormularioPalpite() {
 
             {form.opcao === "Outro" && (
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-[#403eb5]">
+                <label className="mb-1.5 block text-[16px] font-medium text-[#403eb5]">
                   Outra opção de colocação
                 </label>
 
@@ -127,7 +127,7 @@ export default function CardFormularioPalpite() {
             )}
 
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-700">
+              <label className="mb-1.5 block text-[16px] font-medium text-slate-700">
                 Números
               </label>
 

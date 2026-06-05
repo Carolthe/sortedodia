@@ -21,8 +21,8 @@ export default function ProximosResultados() {
         font-bold
         text-[18px]
         px-[20px]
-        py-[12px]
-        rounded-3xl
+        py-[10px]
+        rounded-[15px]
         transition-all
         duration-300
         shadow-sm
