@@ -96,7 +96,7 @@ export default function CardMenuUsuario() {
 
       {/* Depositar */}
       <button className="h-14 w-full rounded-2xl bg-[#FFB000] text-[18px] font-bold text-[#07277D] transition hover:brightness-95">
-        Depositar
+        Recarregar
       </button>
     </div>
   );
