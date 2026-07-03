@@ -13,7 +13,7 @@ export default function Jogo() {
             {/* <HeaderTeste /> */}
             <CardVoltar title="Tipo de jogo" to="/" />
             <div className="flex justify-center">
-            <img className="w-[95%] rounded-[15px] mt-[15px]  " src="https://res.cloudinary.com/do4p13i1a/image/upload/v1780054822/jbb_i43i3r.png" />
+            <img className="w-[95%] rounded-[15px] mt-[15px]  " src="https://res.cloudinary.com/do4p13i1a/image/upload/v1779993687/bannermilhar_rdbqqm.png" alt="Banner do jogo" />
            </div>
         {/* <CardTabelaBicho/> */}
 

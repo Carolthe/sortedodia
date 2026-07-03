@@ -7,10 +7,14 @@ import {
   IoLogInOutline,
 } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import Header from "../components/Header";
 
 export default function Login() {
   return (
-    <div className="min-h-screen bg-[#f5f7fb] px-5 py-6 flex items-center justify-center">
+    <div>
+      <Header />
+    <div className="min-h-screen bg-[#F4F9FD] px-5 py-6 flex items-center justify-center">
+      
       <div className="w-full max-w-md">
 
         {/* BOTÃO VOLTAR */}
@@ -233,6 +237,7 @@ export default function Login() {
 
         </div>
       </div>
+    </div>
     </div>
   );
 }

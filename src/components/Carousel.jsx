@@ -1,7 +1,10 @@
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
+import { ChevronLeft, ChevronRight } from "lucide-react"
 
 export default function Carousel() {
   const [current, setCurrent] = useState(0)
+  const startX = useRef(0)
+  const timeoutRef = useRef(null)
 
   const images = [
     "https://res.cloudinary.com/do4p13i1a/image/upload/v1779991972/bannergrupo_a1knzs.png",
@@ -14,51 +17,62 @@ export default function Carousel() {
   }
 
   const prevSlide = () => {
-    setCurrent((prev) =>
-      prev === 0 ? images.length - 1 : prev - 1
-    )
+    setCurrent((prev) => (prev === 0 ? images.length - 1 : prev - 1))
   }
 
-  let startX = 0
+  // Autoplay
+  useEffect(() => {
+    timeoutRef.current = setTimeout(nextSlide, 5000)
+    return () => clearTimeout(timeoutRef.current)
+  }, [current])
 
   const handleTouchStart = (e) => {
-    startX = e.touches[0].clientX
+    startX.current = e.touches[0].clientX
   }
 
   const handleTouchEnd = (e) => {
     const endX = e.changedTouches[0].clientX
-
-    if (startX - endX > 50) {
-      nextSlide()
-    }
-
-    if (endX - startX > 50) {
-      prevSlide()
-    }
+    if (startX.current - endX > 50) nextSlide()
+    if (endX - startX.current > 50) prevSlide()
   }
 
   return (
-    <div className="w-[98%] mx-auto mt-[10px]">
+    <div className="w-[96%] max-w-7xl mx-auto mt-4">
       <div
-        className="relative overflow-hidden rounded-2xl"
+        className="relative overflow-hidden rounded-2xl shadow-lg"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
       >
         <div
-          className="flex transition-transform duration-500"
-          style={{
-            transform: `translateX(-${current * 100}%)`,
-          }}
+          className="flex transition-transform duration-700 ease-out"
+          style={{ transform: `translateX(-${current * 100}%)` }}
         >
           {images.map((img, index) => (
             <img
               key={index}
               src={img}
               alt={`Slide ${index}`}
-              className="w-full h-[200px] object-cover flex-shrink-0"
+              className="w-full h-[160px] sm:h-[260px] object-cover flex-shrink-0"
             />
           ))}
         </div>
+
+        {/* Setas */}
+        <button
+          onClick={prevSlide}
+          className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-[#062272] rounded-full p-2 shadow-md transition"
+          aria-label="Anterior"
+        >
+          <ChevronLeft size={20} />
+        </button>
+
+        <button
+          onClick={nextSlide}
+          className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-[#062272] rounded-full p-2 shadow-md transition"
+          aria-label="Próximo"
+        >
+          <ChevronRight size={20} />
+        </button>
       </div>
 
       {/* Pontinhos */}
@@ -67,11 +81,12 @@ export default function Carousel() {
           <button
             key={index}
             onClick={() => setCurrent(index)}
-            className={`w-1 h-1 rounded-full transition-all ${
+            className={`h-1.5 rounded-full transition-all ${
               current === index
-                ? "bg-[#062272] scale-125"
-                : "bg-gray-400"
+                ? "bg-[#062272] w-6"
+                : "bg-gray-300 w-1.5"
             }`}
+            aria-label={`Ir para slide ${index + 1}`}
           />
         ))}
       </div>

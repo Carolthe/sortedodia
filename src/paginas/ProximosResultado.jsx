@@ -15,9 +15,9 @@ export default function ProximosResultados() {
                 <Link to="/jogo">
                     <button
                         className="
-        bg-amber-500
-        hover:bg-amber-600
-        text-blue-900
+        bg-[#041958]
+        hover:bg-[#041958]/80
+        text-white
         font-bold
         text-[18px]
         px-[20px]

@@ -11,10 +11,13 @@ import {
   IoCheckmarkCircleOutline,
 } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import Header from "../components/Header";
 
 export default function CriarConta() {
   return (
-    <div className="min-h-screen bg-[#f5f7fb] px-5 py-6">
+    <div>
+      <Header />
+    <div className="min-h-screen bg-[#F4F9FD] px-5 py-6">
       <div className="mx-auto max-w-lg">
 
         {/* VOLTAR */}
@@ -321,6 +324,7 @@ export default function CriarConta() {
         </div>
       </div>
     </div>
+    </div>
   );
 }
 
@@ -339,5 +343,6 @@ function Field({ label, icon, children }) {
 
       {children}
     </div>
+    
   );
 }
