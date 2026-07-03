@@ -17,7 +17,7 @@ export default function Header() {
     <>
       <header className=" bg-[#041958]/95 backdrop-blur-xl border-b border-white/10 shadow-lg">
 
-        <div className="max-w-7xl mx-auto flex items-center justify-between px-5 h-20">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-5 h-17">
 
           {/* Logo */}
 
