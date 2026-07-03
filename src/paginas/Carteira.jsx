@@ -34,18 +34,18 @@ export default function Carteira() {
 
             <div>
 
-              <p className="text-white/70 text-lg">
+              <p className="text-white/70 text-[16px]">
                 Saldo disponível
               </p>
 
-              <h2 className="mt-3 text-5xl font-bold">
+              <h2 className="mt-3 text-[22px] font-bold">
                 R$ {saldo.toFixed(2).replace(".", ",")}
               </h2>
 
             </div>
 
             <div className="rounded-2xl bg-white/10 p-5">
-              <Wallet size={48} />
+              <Wallet size={20} />
             </div>
 
           </div>
