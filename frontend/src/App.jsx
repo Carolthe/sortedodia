@@ -12,6 +12,7 @@ import Login from "./paginas/Login";
 import CriarConta from "./paginas/CriarConta"
 import RecuperarSenha from "./paginas/RecuperarSenha";
 import Carteira from "./paginas/Carteira";
+import MinhasApostas from "./paginas/MinhasApostas";
 
 function App() {
 
@@ -30,6 +31,7 @@ function App() {
         <Route path="/afiliado" element={<Afiliados/>} />
         <Route path="/recuperarsenha" element={<RecuperarSenha/>} />
         <Route path="/carteira" element={<Carteira />} />
+        <Route path="/minhasapostas" element={<MinhasApostas />} /> 
       </Routes>
     </BrowserRouter>
   )

@@ -46,10 +46,10 @@ export default function Home() {
 
             {/* <Carousel /> */}
 
-            <main className="max-w-7xl mx-auto px-4 py-10">
+            <main className="max-w-7xl mx-auto px-4 pt-8">
 
                 {/* Hero */}
-                <div className="mb-10 text-center">
+                <div className="mb-5 text-center">
 
                     <span className="inline-block px-4 py-1 mb-4 rounded-full bg-[#062272]/10 text-[#062272] text-xs font-semibold tracking-wide uppercase">
                         Sua sorte começa aqui
@@ -59,7 +59,7 @@ export default function Home() {
                         Bem-vindo ao <span className="text-[#062272]">Ponto do Bicho</span>
                     </h1>
 
-                    <p className="mt-4 text-gray-500 text-base sm:text-lg max-w-xl mx-auto">
+                    <p className="mt-3 text-gray-500 text-base sm:text-lg max-w-xl mx-auto">
                         Escolha uma das opções abaixo para jogar, conferir resultados e muito mais.
                     </p>
 

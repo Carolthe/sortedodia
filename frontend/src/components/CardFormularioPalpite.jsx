@@ -10,9 +10,33 @@ export default function CardFormularioPalpite() {
     valorOutro: "",
     numeros: "",
   });
+  const [numerosSelecionados, setNumerosSelecionados] = useState([]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "numeros") {
+      // Permite apenas números
+      let numeros = value.replace(/\D/g, "");
+
+      // Copia os grupos atuais
+      let grupos = [...numerosSelecionados];
+
+      // Enquanto houver 4 ou mais dígitos
+      while (numeros.length >= 4) {
+        grupos.push(numeros.slice(0, 4));
+        numeros = numeros.slice(4);
+      }
+
+      setNumerosSelecionados(grupos);
+
+      setForm((prev) => ({
+        ...prev,
+        numeros,
+      }));
+
+      return;
+    }
 
     setForm((prev) => ({
       ...prev,
@@ -22,7 +46,6 @@ export default function CardFormularioPalpite() {
         : {}),
     }));
   };
-
   const selectStyle =
     "w-full max-w-full h-12 rounded-xl border border-slate-300 bg-white px-4 pr-10 text-sm text-slate-700 shadow-sm outline-none appearance-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 overflow-hidden text-ellipsis whitespace-nowrap";
 
@@ -139,12 +162,25 @@ export default function CardFormularioPalpite() {
                 placeholder="Digite os números"
                 className={inputStyle}
               />
+
+              {numerosSelecionados.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {numerosSelecionados.map((numero, index) => (
+                    <div
+                      key={index}
+                      className="rounded-lg bg-blue-100 border border-blue-300 px-4 py-2 text-sm font-semibold text-blue-700"
+                    >
+                      {numero}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <button
               type="button"
               onClick={() => console.log(form)}
-              className="mt-6 h-12 w-full rounded-xl bg-[#062272] font-semibold text-white transition hover:bg-blue-700 active:scale-[0.98]"
+              className="mt-4 h-12 w-full rounded-xl bg-[#062272] font-semibold text-white transition hover:bg-blue-700 active:scale-[0.98]"
             >
               Confirmar
             </button>
