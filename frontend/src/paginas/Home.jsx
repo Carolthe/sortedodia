@@ -35,7 +35,7 @@ export default function Home() {
         },
         {
             title: "Cotação",
-            description: "Veja as cotações",
+            description: "Veja as cotações dia",
             icon: <BadgeDollarSign size={28} />,
             iconBg: "bg-yellow-500",
             link: "/cotacao",
