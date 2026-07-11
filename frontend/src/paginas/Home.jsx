@@ -1,43 +1,100 @@
 import CardAfiliados from "../components/CardAfiliados";
-import CardPaginas from "../components/CardePaginas";
+//import CardPaginas from "../components/CardePaginas";
 //import Carousel from "../components/Carousel";
 import Header from "../components/Header";
 import { Link } from "react-router-dom";
+import PlayButton from "../components/PlayButton";
+//import Benefits from "../components/Benefits";
+import {
+    Dice5,
+    BarChart3,
+    BadgeDollarSign,
+    CalendarDays,
+    Wallet,
+    Landmark,
+} from "lucide-react";
+
+import ServiceCard from "../components/ServiceCard";
+
 
 export default function Home() {
-
-    const paginas = [
+    const services = [
         {
+            title: "Jogo ",
+            description: "Faça suas apostas",
+            icon: <Dice5 size={28} />,
+            iconBg: "bg-blue-600",
             link: "/jogo",
-            imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780248365/doisbi_wgsba8.png",
-            alt: "Jogo do Bicho"
         },
         {
+            title: "Resultados",
+            description: "Veja os resultados",
+            icon: <BarChart3 size={28} />,
+            iconBg: "bg-emerald-500",
             link: "/resultados",
-            imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780070304/res_eua4dm.png",
-            alt: "Resultados"
         },
         {
+            title: "Cotação",
+            description: "Veja as cotações",
+            icon: <BadgeDollarSign size={28} />,
+            iconBg: "bg-yellow-500",
             link: "/cotacao",
-            imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780235379/co_ejflry.png",
-            alt: "Cotação"
         },
         {
-            link: "/horario",
-            imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780247765/ChatGPT_Image_31_05_2026_18_15_30_zyqczg.png",
-            alt: "Próximos Resultados"
+            title: "Próximos",
+            description: "Próximos sorteios",
+            icon: <CalendarDays size={28} />,
+            iconBg: "bg-purple-600",
+            link: "/horario"
         },
         {
-            link: "/saque",
-            imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780235599/sa_oqmzwq.png",
-            alt: "Saque"
+            title: "PIX",
+            description: "Deposite e receba via PIX",
+            icon: <Landmark size={28} />,
+            iconBg: "bg-cyan-500",
+            link: "/pix"
         },
         {
-            link: "/pix",
-            imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780235741/pi_hciizr.png",
-            alt: "Pix"
-        }
+            title: "Saque",
+            description: "Solicite seu saque via PIX",
+            icon: <Wallet size={28} />,
+            iconBg: "bg-orange-500",
+            link: "/saque"
+        },
     ];
+
+    // const paginas = [
+    //     {
+    //         link: "/jogo",
+    //         imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780248365/doisbi_wgsba8.png",
+    //         alt: "Jogo do Bicho"
+    //     },
+    //     {
+    //         link: "/resultados",
+    //         imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780070304/res_eua4dm.png",
+    //         alt: "Resultados"
+    //     },
+    //     {
+    //         link: "/cotacao",
+    //         imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780235379/co_ejflry.png",
+    //         alt: "Cotação"
+    //     },
+    //     {
+    //         link: "/horario",
+    //         imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780247765/ChatGPT_Image_31_05_2026_18_15_30_zyqczg.png",
+    //         alt: "Próximos Resultados"
+    //     },
+    //     {
+    //         link: "/saque",
+    //         imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780235599/sa_oqmzwq.png",
+    //         alt: "Saque"
+    //     },
+    //     {
+    //         link: "/pix",
+    //         imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780235741/pi_hciizr.png",
+    //         alt: "Pix"
+    //     }
+    // ];
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-[#F4F9FD] to-[#E8EFF9]">
@@ -46,27 +103,57 @@ export default function Home() {
 
             {/* <Carousel /> */}
 
-            <main className="max-w-7xl mx-auto px-4 pt-8">
+            <main className="max-w-7xl mx-auto px-4 pt-5">
 
                 {/* Hero */}
                 <div className="mb-5 text-center">
 
-                    <span className="inline-block px-4 py-1 mb-4 rounded-full bg-[#062272]/10 text-[#062272] text-xs font-semibold tracking-wide uppercase">
+                    <span className="inline-block px-4 py-1 mb-4 rounded-full bg-[#c7d6fcab] text-[#062272] text-xs font-semibold tracking-wide uppercase">
                         Sua sorte começa aqui
                     </span>
 
-                    <h1 className="text-3xl sm:text-5xl font-extrabold text-[#0A1F44] tracking-tight">
+                    <h1 className="text-3xl mx-[48px] sm:text-5xl font-extrabold text-[#0A1F44] tracking-tight">
                         Bem-vindo ao <span className="text-[#062272]">Ponto do Bicho</span>
                     </h1>
 
-                    <p className="mt-3 text-gray-500 text-base sm:text-lg max-w-xl mx-auto">
+                    <p className="mt-3 text-gray-500 px-[40px] text-base sm:text-lg max-w-xl mx-auto">
                         Escolha uma das opções abaixo para jogar, conferir resultados e muito mais.
                     </p>
+                    <PlayButton />
+                    {/* <Benefits/> */}
 
                 </div>
 
+
+                <div className="">
+                    <h2 className="text-[20px] font-bold text-blue-950 mb-4 mx-[10px] ">
+                        Navegue pelos serviços
+                    </h2>
+
+
+                    <div className="">
+                        {services.map((service) => (
+
+                            <Link
+                                key={service.alt}
+                                to={service.link}
+                                className="group"
+                            >
+
+                                <ServiceCard
+                                    key={service.title}
+                                    title={service.title}
+                                    description={service.description}
+                                    icon={service.icon}
+                                    iconBg={service.iconBg}
+                                />
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+
                 {/* Grid de páginas */}
-                <section
+                {/* <section
                     className="
                         relative
                         bg-white
@@ -106,7 +193,7 @@ export default function Home() {
 
                     </div>
 
-                </section>
+                </section> */}
 
                 <div className="mt-10">
 
@@ -114,12 +201,12 @@ export default function Home() {
 
                 </div>
 
-            </main>
+            </main >
 
             <footer className="mt-5 py-6 text-center text-sm text-gray-400">
                 © {new Date().getFullYear()} Ponto do Bicho. Todos os direitos reservados.
             </footer>
 
-        </div>
+        </div >
     );
 }
