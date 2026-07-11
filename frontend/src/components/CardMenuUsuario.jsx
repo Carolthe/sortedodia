@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 
 export default function CardMenuUsuario() {
   return (
-    <div className="w-full rounded-2xl bg-white/5 p-5 text-white">
+    <div className="w-full rounded-2xl  p-5 text-white">
       {/* Cabeçalho */}
       <div className="mb-6 flex items-center justify-between">
         <div>
@@ -61,7 +61,7 @@ export default function CardMenuUsuario() {
       </div>
 
       {/* Saldos */}
-      <div className="mb-8 space-y-3">
+      <div className="mb-4 space-y-3">
         <div className="flex items-center justify-between rounded-2xl bg-white/5 p-4">
           <span className="text-[17px]">
             Saldo
@@ -92,7 +92,7 @@ export default function CardMenuUsuario() {
 
       {/* Minhas apostas */}
       <Link to="/minhasapostas">
-        <button className="mb-3 flex w-full items-center justify-center gap-3 rounded-xl py-3 text-[18px] font-bold text-[#FFB000] transition hover:bg-white/10">
+        <button className="mb-3 flex w-full items-center justify-center gap-3 rounded-xl  text-[18px] font-bold text-[#FFB000] transition hover:bg-white/10">
           <Zap
             size={22}
             className="fill-[#FFB000]"

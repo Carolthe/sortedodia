@@ -108,7 +108,7 @@ export default function Header() {
 
           </div>
 
-          <div className="p-5">
+          <div className="">
             <CardMenuUsuario />
           </div>
 
