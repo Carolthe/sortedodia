@@ -13,7 +13,9 @@ const db = mysql.createPool({
 
     waitForConnections:true,
 
-    connectionLimit:10
+    connectionLimit:10,
+
+    charset: "utf8mb4",
 
 });
 

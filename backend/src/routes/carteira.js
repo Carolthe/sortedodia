@@ -1,50 +1,42 @@
 const router = require("express").Router();
 
 const db = require("../config/database");
+const auth = require("../middlewares/auth");
 
+router.get("/", auth, async (req, res) => {
 
+    try {
 
-// buscar carteira do usuário
+        const id_usuario = req.usuario.id_usuario;
 
-router.get("/:id_usuario",async(req,res)=>{
+        const [carteira] = await db.query(
+            `
+            SELECT *
+            FROM carteira
+            WHERE id_usuario = ?
+            `,
+            [id_usuario]
+        );
 
+        if (!carteira.length) {
 
-try{
+            return res.json({
+                saldo: 0,
+                bonus: 0
+            });
 
+        }
 
-const {id_usuario}=req.params;
+        res.json(carteira[0]);
 
+    } catch (error) {
 
-const [carteira]=await db.query(
+        res.status(500).json({
+            erro: error.message
+        });
 
-`
-SELECT *
-FROM carteira
-WHERE id_usuario=?
-
-`,
-
-[id_usuario]
-
-);
-
-
-
-res.json(carteira[0]);
-
-
-
-}catch(error){
-
-res.status(500).json({
-erro:error.message
-});
-
-}
-
+    }
 
 });
 
-
-
-module.exports=router;
+module.exports = router;

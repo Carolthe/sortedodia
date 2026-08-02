@@ -1,18 +1,23 @@
 const express = require("express");
 const cors = require("cors");
 
-
 const usuarioRoutes = require("./routes/usuarios");
 const apostaRoutes = require("./routes/aposta");
 const carteiraRoutes = require("./routes/carteira");
 const resultadoRoutes = require("./routes/resultado");
-
-
+const selectsRoutes = require("./routes/selects");
+const proximosResultados = require("./routes/proximosResultados");
+const afiliadosRoutes = require("./routes/afiliados");
+const pagamentosRoutes = require("./routes/pagamentos");
+const cotacoes = require("./routes/cotacoes");
+const saquesRoutes = require("./routes/saques");
 
 const app = express();
 
 
+
 app.use(cors());
+
 
 app.use(express.json());
 
@@ -20,40 +25,41 @@ app.use(express.json());
 
 // teste API
 
-app.get("/", (req, res) => {
+app.get("/", (req,res)=>{
 
     res.json({
-        mensagem: "API Sorte Todo Dia funcionando"
+
+        mensagem:
+            "API Sorte Todo Dia funcionando"
+
     });
 
 });
 
 
 
-// Rotas
 
-app.use(
-    "/usuarios",
-    usuarioRoutes
-);
+// ROTAS
 
+app.use("/usuarios", usuarioRoutes);
 
-app.use(
-    "/apostas",
-    apostaRoutes
-);
+app.use("/apostas", apostaRoutes);
 
+app.use("/carteira", carteiraRoutes);
 
-app.use(
-    "/carteira",
-    carteiraRoutes
-);
+app.use("/resultados", resultadoRoutes);
 
+app.use("/selects", selectsRoutes);
 
-app.use(
-    "/resultados",
-    resultadoRoutes
-);
+app.use("/proximos-resultados", proximosResultados);
+
+app.use("/afiliados", afiliadosRoutes);
+
+app.use("/pagamentos", pagamentosRoutes);
+
+app.use("/cotacoes", cotacoes);
+
+app.use("/saques", saquesRoutes);
 
 
 
