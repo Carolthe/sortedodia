@@ -7,15 +7,11 @@ router.get("/", async (req, res) => {
     try {
 
         const [cotacoes] = await db.query(
-
-            `
-            SELECT
+            `SELECT
                 modalidade,
                 cotacao
             FROM cotacoes
-            ORDER BY modalidade
-            `
-
+            ORDER BY modalidade `
         );
 
         res.json(cotacoes);
@@ -23,35 +19,21 @@ router.get("/", async (req, res) => {
     } catch (erro) {
 
         res.status(500).json({
-
             erro: erro.message
-
         });
-
     }
-
 });
 
 router.post("/calcular", async (req, res) => {
 
     try {
-
-        const {
-
-            modalidade,
-
-            valor
-
-        } = req.body;
+        const {modalidade,valor} = req.body;
 
         if (!modalidade) {
 
             return res.status(400).json({
-
                 erro: "Modalidade obrigatória."
-
             });
-
         }
 
         if (!valor || Number(valor) <= 0) {
@@ -59,30 +41,22 @@ router.post("/calcular", async (req, res) => {
             return res.status(400).json({
 
                 erro: "Valor inválido."
-
             });
-
         }
 
         const [resultado] = await db.query(
 
-            `
-            SELECT cotacao
+            `SELECT cotacao
             FROM cotacoes
-            WHERE modalidade = ?
-            `,
+            WHERE modalidade = ?`,
             [modalidade]
-
         );
 
         if (!resultado.length) {
 
             return res.status(404).json({
-
                 erro: "Modalidade não encontrada."
-
             });
-
         }
 
         const cotacao = Number(resultado[0].cotacao);
@@ -92,25 +66,17 @@ router.post("/calcular", async (req, res) => {
         res.json({
 
             modalidade,
-
             valor: Number(valor),
-
             cotacao,
-
             premio
-
         });
 
     } catch (erro) {
 
         res.status(500).json({
-
             erro: erro.message
-
         });
-
     }
-
 });
 
 module.exports = router;

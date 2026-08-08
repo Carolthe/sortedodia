@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-
 const usuarioRoutes = require("./routes/usuarios");
 const apostaRoutes = require("./routes/aposta");
 const carteiraRoutes = require("./routes/carteira");
@@ -14,53 +13,26 @@ const saquesRoutes = require("./routes/saques");
 
 const app = express();
 
-
-
 app.use(cors());
 
-
 app.use(express.json());
-
-
 
 // teste API
 
 app.get("/", (req,res)=>{
-
-    res.json({
-
-        mensagem:
-            "API Sorte Todo Dia funcionando"
-
-    });
-
+    res.json({ mensagem: "API Sorte Todo Dia funcionando"});
 });
 
-
-
-
 // ROTAS
-
 app.use("/usuarios", usuarioRoutes);
-
 app.use("/apostas", apostaRoutes);
-
 app.use("/carteira", carteiraRoutes);
-
 app.use("/resultados", resultadoRoutes);
-
 app.use("/selects", selectsRoutes);
-
 app.use("/proximos-resultados", proximosResultados);
-
 app.use("/afiliados", afiliadosRoutes);
-
 app.use("/pagamentos", pagamentosRoutes);
-
 app.use("/cotacoes", cotacoes);
-
 app.use("/saques", saquesRoutes);
-
-
 
 module.exports = app;

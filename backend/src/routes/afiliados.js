@@ -13,11 +13,9 @@ router.post("/", async (req, res) => {
             });
         }
 
-        const sql = `
-            INSERT INTO afiliados
+        const sql = `INSERT INTO afiliados
             (nome, whatsapp, descricao_divulgacao, criado_em)
-            VALUES (?, ?, ?, NOW())
-        `;
+            VALUES (?, ?, ?, NOW())`;
 
         await db.execute(sql, [
             nome,
