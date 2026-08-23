@@ -1,11 +1,10 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL: "https://sortedodia-production.up.railway.app"
+    baseURL: import.meta.env.API_URL
 });
 
 api.interceptors.request.use(config => {
-
     const token = localStorage.getItem("token");
 
     if (token) {
@@ -16,24 +15,18 @@ api.interceptors.request.use(config => {
 });
 
 api.interceptors.response.use(
-
     response => response,
 
     error => {
-
         if (error.response?.status === 401) {
-
             localStorage.removeItem("token");
             localStorage.removeItem("usuario");
 
             window.location.href = "/login";
-
         }
 
         return Promise.reject(error);
-
     }
-
 );
 
 export default api;
