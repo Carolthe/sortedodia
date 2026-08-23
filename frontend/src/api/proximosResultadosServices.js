@@ -1,8 +1,7 @@
-import axios from "axios";
-
-const API_URL = "http://localhost:3000/proximos-resultados";
+import api from "./api"; // mesma instância axios usada no projeto
 
 export async function listarProximosResultados() {
-  const response = await axios.get(API_URL);
-  return response.data;
+  const { data } = await api.get("/proximos-resultados");
+
+  return data;
 }
