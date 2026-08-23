@@ -13,11 +13,10 @@ import CriarConta from "./paginas/CriarConta"
 import RecuperarSenha from "./paginas/RecuperarSenha";
 import Carteira from "./paginas/Carteira";
 import MinhasApostas from "./paginas/MinhasApostas";
-import { UsuarioProvider } from "./context/UsuarioProvider";
 function App() {
 
   return (
-    <UsuarioProvider>
+   
     <BrowserRouter>
       <Routes>
         <Route  path="/" element={<Home />} />
@@ -35,7 +34,7 @@ function App() {
         <Route path="/minhasapostas" element={<MinhasApostas />} /> 
       </Routes>
     </BrowserRouter>
-    </UsuarioProvider>
+    
   )
 }
 
