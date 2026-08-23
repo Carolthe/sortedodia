@@ -9,15 +9,17 @@ const mysql = require("mysql2/promise");
 //     connectionLimit:10,
 //     charset: "utf8mb4",
 // });
+const mysql = require("mysql2/promise");
 
 const db = mysql.createPool(process.env.MYSQL_URL);
 
-try {
-  const connection = await db.getConnection();
-  console.log("Banco de dados conectado com sucesso!");
-  connection.release();
-} catch (error) {
-  console.error("Erro ao conectar ao banco:", error);
-}
+db.getConnection()
+  .then((connection) => {
+    console.log("Banco de dados conectado com sucesso!");
+    connection.release();
+  })
+  .catch((error) => {
+    console.error("Erro ao conectar ao banco:", error);
+  });
 
 module.exports = db;
