@@ -42,6 +42,6 @@ app.use("/proximos-resultados", proximosResultados);
 app.use("/afiliados", afiliadosRoutes);
 app.use("/pagamentos", pagamentosRoutes);
 app.use("/cotacoes", cotacoes);
-app.use("/saques", saquesRoutes);
+// app.use("/saques", saquesRoutes);
 
 module.exports = app;

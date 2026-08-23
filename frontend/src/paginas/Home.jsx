@@ -10,7 +10,7 @@ import {
     BarChart3,
     BadgeDollarSign,
     CalendarDays,
-    Wallet,
+    // Wallet,
     Landmark,
 } from "lucide-react";
 
@@ -54,13 +54,13 @@ export default function Home() {
             iconBg: "bg-cyan-500",
             link: "/pix"
         },
-        {
-            title: "Saque",
-            description: "Solicite seu saque via PIX",
-            icon: <Wallet size={28} />,
-            iconBg: "bg-orange-500",
-            link: "/saque"
-        },
+        // {
+        //     // title: "Saque",
+        //     // description: "Solicite seu saque via PIX",
+        //     // icon: <Wallet size={28} />,
+        //     // iconBg: "bg-orange-500",
+        //     // link: "/saque"
+        // },
     ];
 
     // const paginas = [
