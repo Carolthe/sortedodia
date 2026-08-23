@@ -1,22 +1,18 @@
 import { Printer, MessageCircle } from "lucide-react";
 
-export default function CardResultado() {
-  const resultados = [
-    { premio: "1°", milhar: "2651", grupo: "13", animal: "Galo" },
-    { premio: "2°", milhar: "6109", grupo: "03", animal: "Burro" },
-    { premio: "3°", milhar: "1543", grupo: "11", animal: "Cavalo" },
-    { premio: "4°", milhar: "2692", grupo: "23", animal: "Urso" },
-    { premio: "5°", milhar: "1944", grupo: "11", animal: "Cavalo" },
-    { premio: "6°", milhar: "4939", grupo: "10", animal: "Coelho" },
-    { premio: "7°", milhar: "0194", grupo: "24", animal: "Veado" },
-  ];
-
+export default function CardResultado({ resultados }) {
   return (
     <div className="w-full max-w-md mb-[15px] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       {/* Header */}
       <div className="flex items-center justify-between bg-slate-200 px-4 py-3">
         <h2 className="text-lg font-bold text-slate-900">
-          29/05/2026 - PT-SP 8h
+          {resultados.length > 0 && (
+            <>
+              {new Date(resultados[0].data).toLocaleDateString("pt-BR")} -{" "}
+              {resultados[0].lugar}{" "}
+              {parseInt(resultados[0].hora.substring(0, 2))}h
+            </>
+          )}
         </h2>
 
         <div className="flex gap-2">
@@ -30,27 +26,24 @@ export default function CardResultado() {
         </div>
       </div>
 
-      {/* Tabela */}
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b bg-[#f8f8fe]">
             <th className="px-4 py-3 text-left font-semibold">Prêmio</th>
             <th className="px-4 py-3 text-left font-semibold">Milhar</th>
-            <th className="px-4 py-3 text-left font-semibold">Grupo</th>
             <th className="px-4 py-3 text-left font-semibold">Animal</th>
           </tr>
         </thead>
 
         <tbody>
-          {resultados.map((item, index) => (
+          {resultados.map((item) => (
             <tr
-              key={index}
+              key={item.id_resultado}
               className="border-b last:border-b-0 hover:bg-slate-50"
             >
               <td className="px-4 py-[2px]">{item.premio}</td>
-              <td className="px-4 ">{item.milhar}</td>
-              <td className="px-4 ">{item.grupo}</td>
-              <td className="px-4 ">{item.animal}</td>
+              <td className="px-4">{item.milhar}</td>
+              <td className="px-4">{item.animal}</td>
             </tr>
           ))}
         </tbody>

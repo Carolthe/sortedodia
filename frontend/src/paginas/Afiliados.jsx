@@ -1,7 +1,48 @@
+import { useState } from "react";
 import CardVoltar from "../components/CardVoltar";
 import Header from "../components/Header";
+import { cadastrarAfiliado } from "../api/apiAfiliados";
 
 export default function Afiliados() {
+  const [nome, setNome] = useState("");
+  const [whatsapp, setWhatsapp] = useState("");
+  const [descricao, setDescricao] = useState("");
+  const [carregando, setCarregando] = useState(false);
+
+  const enviarFormulario = async (e) => {
+    e.preventDefault();
+
+    if (!nome || !whatsapp || !descricao) {
+      alert("Preencha todos os campos.");
+      return;
+    }
+
+    try {
+      setCarregando(true);
+
+      const data = await cadastrarAfiliado({
+        nome,
+        whatsapp,
+        descricao_divulgacao: descricao,
+      });
+
+      alert(data.mensagem || "Solicitação enviada com sucesso!");
+
+      setNome("");
+      setWhatsapp("");
+      setDescricao("");
+    } catch (error) {
+      console.error(error);
+
+      alert(
+        error.response?.data?.mensagem ||
+          "Erro ao enviar a solicitação."
+      );
+    } finally {
+      setCarregando(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -18,7 +59,10 @@ export default function Afiliados() {
           equipe.
         </p>
 
-        <form className="mt-[15px] flex flex-col gap-[20px]">
+        <form
+          onSubmit={enviarFormulario}
+          className="mt-[15px] flex flex-col gap-[20px]"
+        >
           {/* Contato */}
           <div className="w-full">
             <h2 className="mb-[10px] text-xl font-bold text-[#062272]">
@@ -38,6 +82,8 @@ export default function Afiliados() {
                   id="nome"
                   type="text"
                   placeholder="Digite seu nome"
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
                   className="
                     w-full
                     h-12
@@ -66,6 +112,8 @@ export default function Afiliados() {
                   id="whatsapp"
                   type="tel"
                   placeholder="(00) 00000-0000"
+                  value={whatsapp}
+                  onChange={(e) => setWhatsapp(e.target.value)}
                   className="
                     w-full
                     h-12
@@ -91,11 +139,12 @@ export default function Afiliados() {
             </h2>
 
             <div>
-
               <textarea
                 id="divulgacao"
                 rows={5}
                 placeholder="Descreva como você pretende divulgar a plataforma. Isso nos ajuda a identificar bons afiliados."
+                value={descricao}
+                onChange={(e) => setDescricao(e.target.value)}
                 className="
                   w-full
                   resize-none
@@ -116,6 +165,7 @@ export default function Afiliados() {
             <div className="mt-6 flex justify-center">
               <button
                 type="submit"
+                disabled={carregando}
                 className="
                   w-full
                   sm:w-[320px]
@@ -127,9 +177,11 @@ export default function Afiliados() {
                   text-[#001A72]
                   transition
                   hover:brightness-95
+                  disabled:opacity-60
+                  disabled:cursor-not-allowed
                 "
               >
-                Enviar
+                {carregando ? "Enviando..." : "Enviar"}
               </button>
             </div>
           </div>

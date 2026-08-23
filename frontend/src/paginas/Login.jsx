@@ -11,12 +11,12 @@ import {
 import Header from "../components/Header";
 import { loginUsuario } from "../api/usuariosServices";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 
 export default function Login() {
 
-  const navigate = useNavigate();
+  
 
   const [form, setForm] = useState({
     email: "",
@@ -59,7 +59,7 @@ export default function Login() {
 
       alert("Login realizado com sucesso!");
 
-      navigate("/");
+      window.location.href = "/";
 
 
     } catch (erro) {
@@ -143,7 +143,7 @@ export default function Login() {
               >
 
                 <IoPersonCircleOutline
-                  size={22}
+                  size={28}
                   color="white"
                 />
 

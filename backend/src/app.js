@@ -13,7 +13,16 @@ const saquesRoutes = require("./routes/saques");
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = [
+  "https://sortedodia-sigma.vercel.app"
+];
+
+app.use(
+  cors({
+    origin: allowedOrigins,
+    credentials: true
+  })
+);
 
 app.use(express.json());
 

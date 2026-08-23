@@ -10,8 +10,7 @@ import CardMenuUsuario from "./CardMenuUsuario";
 export default function Header() {
   const [menuAberto, setMenuAberto] = useState(false);
 
-  // Exemplo
-  const usuarioLogado = true;
+  const usuarioLogado = !!localStorage.getItem("token");
 
   return (
     <>
@@ -88,8 +87,8 @@ export default function Header() {
 
         <aside
           className={`fixed right-0 top-0 z-50 h-screen w-[380px] max-w-[90vw] bg-[#041958] shadow-2xl transition-transform duration-300 ${menuAberto
-              ? "translate-x-0"
-              : "translate-x-full"
+            ? "translate-x-0"
+            : "translate-x-full"
             }`}
         >
 
@@ -109,7 +108,7 @@ export default function Header() {
           </div>
 
           <div className="">
-            <CardMenuUsuario />
+            <CardMenuUsuario fecharMenu={() => setMenuAberto(false)} />
           </div>
 
         </aside>

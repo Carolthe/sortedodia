@@ -1,7 +1,7 @@
 export function CardSaldo({ saldo = "R$ 0,00" }) {
     return (
         <div className="flex justify-center">
-            <div className="w-[90%]  rounded-2xl border-2 border-[#041958] bg-[#fefdfd] py-[5px] px-[10px]">
+            <div className="w-[88%]  rounded-2xl border-2 border-[#8999c7] bg-[#fefdfd] py-[5px] px-[10px]">
                 <h3 className="text-[20px] font-medium text-gray-800">
                     Saldo
                 </h3>

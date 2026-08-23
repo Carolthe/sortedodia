@@ -14,6 +14,7 @@ import { useState } from "react";
 import { cadastrarUsuario } from "../api/usuariosServices";
 import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
+import api from "../api/api"
 
 export default function CriarConta() {
 
@@ -331,11 +332,24 @@ export default function CriarConta() {
             </div>
 
             {/* GOOGLE */}
-              <GoogleLogin
-              onSuccess={credentialResponse => {
-                console.log(credentialResponse);
+            <GoogleLogin
+              onSuccess={async (credentialResponse) => {
+
+                const resposta = await api.post("/usuarios/login-google", {
+                  credential: credentialResponse.credential
+                });
+
+                localStorage.setItem("token", resposta.data.token);
+
+                localStorage.setItem(
+                  "usuario",
+                  JSON.stringify(resposta.data.usuario)
+                );
+
+                window.location.href = "/";
               }}
-              onError={() => console.log("Erro")}
+
+              onError={() => alert("Erro ao entrar com Google")}
             />
 
             {/* LOGIN */}

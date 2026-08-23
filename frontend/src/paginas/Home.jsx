@@ -126,7 +126,7 @@ export default function Home() {
 
 
                 <div className="">
-                    <h2 className="text-[20px] font-bold text-blue-950 mb-4 mx-[10px] ">
+                    <h2 className="text-[20px] font-bold text-blue-950 mb-4 mx-[15px] ">
                         Navegue pelos serviços
                     </h2>
 

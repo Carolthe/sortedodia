@@ -16,13 +16,9 @@ export default function CardData() {
       </button>
 
       {/* Data */}
-      <div
-        className="
-          flex h-11 min-w-[260px] items-center gap-2
+      <div className=" flex h-11 min-w-[260px] items-center gap-2
           rounded-2xl border border-slate-300
-          bg-white px-4
-        "
-      >
+          bg-white px-4" >
         <CalendarDays
           size={16}
           className="text-slate-500"

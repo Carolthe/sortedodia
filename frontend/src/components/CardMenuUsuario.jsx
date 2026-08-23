@@ -1,14 +1,29 @@
 import {
   LogOut,
-  Gift,
-  Star,
+  // Gift,
+  // Star,
   RefreshCw,
   Zap,
   Wallet,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useUsuario } from "../context/useUsuario";
 
-export default function CardMenuUsuario() {
+export default function CardMenuUsuario({ fecharMenu }) {
+
+  const { usuario } = useUsuario();
+
+  const navigate = useNavigate();
+
+  function logout() {
+
+    fecharMenu();
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("usuario");
+
+    navigate("/");
+  }
   return (
     <div className="w-full rounded-2xl  p-5 text-white">
       {/* Cabeçalho */}
@@ -19,25 +34,25 @@ export default function CardMenuUsuario() {
           </span>
 
           <h2 className="mt-1 text-[17px] font-semibold leading-tight">
-            Caroline Tenorio de Oliveira
+            {usuario?.nome}
           </h2>
         </div>
 
-        <button className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition hover:bg-white/10">
+        <button onClick={logout} className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium transition hover:bg-white/10">
           <LogOut size={18} />
           Sair
         </button>
       </div>
 
       {/* Fidelidade */}
-      <div className="mb-6 flex items-start justify-between rounded-2xl bg-white/5 p-4">
+      {/* <div className="mb-6 flex items-start justify-between rounded-2xl bg-white/5 p-4">
         <div className="flex gap-3">
           <Gift
             size={26}
             className="mt-1 text-white"
-          />
+          /> */}
 
-          <div>
+      {/* <div>
             <p className="font-semibold">
               Bônus de fidelidade
             </p>
@@ -57,8 +72,8 @@ export default function CardMenuUsuario() {
             size={20}
             className="fill-yellow-400 text-yellow-400"
           />
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
 
       {/* Saldos */}
       <div className="mb-4 space-y-3">
@@ -74,7 +89,18 @@ export default function CardMenuUsuario() {
             />
 
             <span className="text-[20px] font-bold">
-              R$ 0,00
+
+              {usuario?.saldo
+                ? usuario.saldo.toLocaleString(
+                  "pt-BR",
+                  {
+                    style: "currency",
+                    currency: "BRL"
+                  }
+                )
+                : "R$ 0,00"
+              }
+
             </span>
           </div>
         </div>
