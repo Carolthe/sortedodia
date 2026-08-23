@@ -1,4 +1,4 @@
-// const mysql = require("mysql2/promise");
+const mysql = require("mysql2/promise");
 
 // const db = mysql.createPool({
 //     host:process.env.DB_HOST,
@@ -10,10 +10,6 @@
 //     charset: "utf8mb4",
 // });
 
-// module.exports = db;
-
-const mysql = require("mysql2/promise");
-
 const db = mysql.createPool(process.env.MYSQL_URL);
 
 try {
@@ -24,4 +20,4 @@ try {
   console.error("Erro ao conectar ao banco:", error);
 }
 
-export default db;
+module.exports = db;
