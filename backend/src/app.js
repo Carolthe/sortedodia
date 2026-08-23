@@ -14,7 +14,7 @@ const saquesRoutes = require("./routes/saques");
 const app = express();
 
 const allowedOrigins = [
-  "https://sortedodia-sigma.vercel.app"
+  "https://sortedodia10-sooty.vercel.app/"
 ];
 
 app.use(
