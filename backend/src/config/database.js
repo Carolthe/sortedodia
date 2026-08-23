@@ -13,7 +13,6 @@
 // module.exports = db;
 
 const mysql = require("mysql2/promise");
-import db from '../config/database.js';
 
 const db = mysql.createPool(process.env.MYSQL_URL);
 
