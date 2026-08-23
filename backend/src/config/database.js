@@ -12,8 +12,8 @@
 
 // module.exports = db;
 
-import mysql from "mysql2/promise";
-import "dotenv/config";
+const mysql = require("mysql2/promise");
+import db from '../config/database.js';
 
 const db = mysql.createPool(process.env.MYSQL_URL);
 
