@@ -29,7 +29,7 @@ const corsOptions = {
     origin: function (origin, callback) {
 
         // Permite requisições sem Origin
-        // (Postman, curl, comunicação entre servidores, etc.)
+        // Ex.: Postman, curl ou comunicação entre servidores
         if (!origin) {
             return callback(null, true);
         }
@@ -63,9 +63,6 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-
-// Responde explicitamente ao preflight
-app.options("*", cors(corsOptions));
 
 /**
  * =========================================================
@@ -102,7 +99,5 @@ app.use("/proximos-resultados", proximosResultadosRoutes);
 app.use("/afiliados", afiliadosRoutes);
 app.use("/pagamentos", pagamentosRoutes);
 app.use("/cotacoes", cotacoesRoutes);
-
-// app.use("/saques", saquesRoutes);
 
 module.exports = app;
