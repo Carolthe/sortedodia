@@ -4,7 +4,7 @@ import Home from "./paginas/Home"
 import Jogo from "./paginas/Jogo"
 import Resultados from "./paginas/Resultados";
 import Cotacao from "./paginas/Cotacao";
-// import Saque from "./paginas/Saque";
+import Saque from "./paginas/Saque";
 import ProximosResultados from "./paginas/ProximosResultado";
 import Pix from "./paginas/Pix";
 import Afiliados from "./paginas/Afiliados";
@@ -27,7 +27,7 @@ function App() {
         <Route path="/jogo" element={<Jogo />} />
         <Route path="/resultados" element={<Resultados />} />
          <Route path="/cotacao" element={<Cotacao />} />
-        {/* <Route path="/saque" element={<Saque/>} /> */}
+        <Route path="/saque" element={<Saque/>} />
         <Route path="/horario" element={<ProximosResultados/>} />
         <Route path="/pix" element={<Pix/>} />
         <Route path="/afiliado" element={<Afiliados/>} />
