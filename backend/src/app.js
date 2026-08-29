@@ -9,13 +9,13 @@ const proximosResultados = require("./routes/proximosResultados");
 const afiliadosRoutes = require("./routes/afiliados");
 const pagamentosRoutes = require("./routes/pagamentos");
 const cotacoes = require("./routes/cotacoes");
-const saquesRoutes = require("./routes/saques");
+//const saquesRoutes = require("./routes/saques");
 
 const app = express();
 
 const allowedOrigins = [
   "https://sortedodia10-sooty.vercel.app/"
-];
+]
 
 app.use(
   cors({

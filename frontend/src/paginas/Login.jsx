@@ -12,7 +12,7 @@ import Header from "../components/Header";
 import { loginUsuario } from "../api/usuariosServices";
 import { useState } from "react";
 import { Link} from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
+// import { GoogleLogin } from "@react-oauth/google";
 
 export default function Login() {
 
@@ -492,12 +492,12 @@ export default function Login() {
 
 
             {/* GOOGLE */}
-            <GoogleLogin
+            {/* <GoogleLogin
               onSuccess={credentialResponse => {
                 console.log(credentialResponse);
               }}
               onError={() => console.log("Erro")}
-            />
+            /> */}
 
 
 
