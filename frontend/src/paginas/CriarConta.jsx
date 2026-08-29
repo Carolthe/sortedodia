@@ -13,8 +13,8 @@ import Header from "../components/Header";
 import { useState } from "react";
 import { cadastrarUsuario } from "../api/usuariosServices";
 import { Link, useNavigate } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
-import api from "../api/api"
+// import { GoogleLogin } from "@react-oauth/google";
+//import api from "../api/api"
 
 export default function CriarConta() {
 
@@ -332,7 +332,7 @@ export default function CriarConta() {
             </div>
 
             {/* GOOGLE */}
-            <GoogleLogin
+            {/* <GoogleLogin
               onSuccess={async (credentialResponse) => {
 
                 const resposta = await api.post("/usuarios/login-google", {
@@ -350,7 +350,7 @@ export default function CriarConta() {
               }}
 
               onError={() => alert("Erro ao entrar com Google")}
-            />
+            /> */}
 
             {/* LOGIN */}
             <div className="text-center">

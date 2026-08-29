@@ -16,8 +16,6 @@ import { Link} from "react-router-dom";
 
 export default function Login() {
 
-  
-
   const [form, setForm] = useState({
     email: "",
     senha: "",
@@ -25,7 +23,6 @@ export default function Login() {
 
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [carregando, setCarregando] = useState(false);
-
 
   function handleChange(e) {
     setForm({
@@ -486,10 +483,6 @@ export default function Login() {
 
 
             </div>
-
-
-
-
 
             {/* GOOGLE */}
             {/* <GoogleLogin
