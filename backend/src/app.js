@@ -10,6 +10,7 @@ const proximosResultadosRoutes = require("./routes/proximosResultados");
 const afiliadosRoutes = require("./routes/afiliados");
 const pagamentosRoutes = require("./routes/pagamentos");
 const cotacoesRoutes = require("./routes/cotacoes");
+const saquesRoutes = require("./routes/saques")
 
 const app = express();
 
@@ -99,5 +100,6 @@ app.use("/proximos-resultados", proximosResultadosRoutes);
 app.use("/afiliados", afiliadosRoutes);
 app.use("/pagamentos", pagamentosRoutes);
 app.use("/cotacoes", cotacoesRoutes);
+app.use("/saques", saquesRoutes)
 
 module.exports = app;
