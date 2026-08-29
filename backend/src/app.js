@@ -1,47 +1,108 @@
 const express = require("express");
 const cors = require("cors");
+
 const usuarioRoutes = require("./routes/usuarios");
 const apostaRoutes = require("./routes/aposta");
 const carteiraRoutes = require("./routes/carteira");
 const resultadoRoutes = require("./routes/resultado");
 const selectsRoutes = require("./routes/selects");
-const proximosResultados = require("./routes/proximosResultados");
+const proximosResultadosRoutes = require("./routes/proximosResultados");
 const afiliadosRoutes = require("./routes/afiliados");
 const pagamentosRoutes = require("./routes/pagamentos");
-const cotacoes = require("./routes/cotacoes");
-//const saquesRoutes = require("./routes/saques");
+const cotacoesRoutes = require("./routes/cotacoes");
 
 const app = express();
 
-const allowedOrigins = [
-  "https://sortedodia10-sooty.vercel.app/"
-]
+/**
+ * =========================================================
+ * CORS
+ * =========================================================
+ */
 
-app.use(
-  cors({
-    origin: allowedOrigins,
-    credentials: true
-  })
-);
+const allowedOrigins = [
+    "https://sortedodia10-sooty.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:5173"
+];
+
+const corsOptions = {
+    origin: function (origin, callback) {
+
+        // Permite requisições sem Origin
+        // (Postman, curl, comunicação entre servidores, etc.)
+        if (!origin) {
+            return callback(null, true);
+        }
+
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+
+        return callback(
+            new Error(`Origem não permitida pelo CORS: ${origin}`)
+        );
+    },
+
+    credentials: true,
+
+    methods: [
+        "GET",
+        "POST",
+        "PUT",
+        "PATCH",
+        "DELETE",
+        "OPTIONS"
+    ],
+
+    allowedHeaders: [
+        "Content-Type",
+        "Authorization"
+    ],
+
+    optionsSuccessStatus: 204
+};
+
+app.use(cors(corsOptions));
+
+// Responde explicitamente ao preflight
+app.options("*", cors(corsOptions));
+
+/**
+ * =========================================================
+ * MIDDLEWARES
+ * =========================================================
+ */
 
 app.use(express.json());
 
-// teste API
+/**
+ * =========================================================
+ * TESTE DA API
+ * =========================================================
+ */
 
-app.get("/", (req,res)=>{
-    res.json({ mensagem: "API Sorte Todo Dia funcionando"});
+app.get("/", (req, res) => {
+    res.status(200).json({
+        mensagem: "API Sorte Todo Dia funcionando"
+    });
 });
 
-// ROTAS
+/**
+ * =========================================================
+ * ROTAS
+ * =========================================================
+ */
+
 app.use("/usuarios", usuarioRoutes);
 app.use("/apostas", apostaRoutes);
 app.use("/carteira", carteiraRoutes);
 app.use("/resultados", resultadoRoutes);
 app.use("/selects", selectsRoutes);
-app.use("/proximos-resultados", proximosResultados);
+app.use("/proximos-resultados", proximosResultadosRoutes);
 app.use("/afiliados", afiliadosRoutes);
 app.use("/pagamentos", pagamentosRoutes);
-app.use("/cotacoes", cotacoes);
+app.use("/cotacoes", cotacoesRoutes);
+
 // app.use("/saques", saquesRoutes);
 
 module.exports = app;
