@@ -50,53 +50,81 @@ router.post("/cadastro", async (req, res) => {
         });
     }
 });
-
 // ==================================================
 // LOGIN
 // ==================================================
 
-router.post("/login", async (req,res)=>{
+router.post("/login", async (req, res) => {
     try {
-        const { email, senha} = req.body;
+        const { email, senha } = req.body;
 
-        const [usuarios] =
-            await db.query(
-                ` SELECT * FROM usuarios WHERE email=? `, [ email]);
+        // Verifica campos obrigatórios
+        if (!email || !senha) {
+            return res.status(400).json({
+                erro: "Email e senha são obrigatórios."
+            });
+        }
 
+        // Busca usuário pelo email
+        const [usuarios] = await db.query(
+            `SELECT * FROM usuarios WHERE email = ?`,
+            [email]
+        );
+
+        // Email não encontrado
         if (!usuarios.length) {
-
             return res.status(401).json({
-                erro: "Email ou senha inválidos."});
+                erro: "Email incorreto.",
+                tipo: "email"
+            });
         }
 
         const usuario = usuarios[0];
 
-        const senhaOk = await bcrypt.compare( senha, usuario.senha)
+        // Verifica senha
+        const senhaOk = await bcrypt.compare(
+            senha,
+            usuario.senha
+        );
 
+        // Senha incorreta
         if (!senhaOk) {
             return res.status(401).json({
-                erro: "Email ou senha inválidos."});
+                erro: "Senha incorreta.",
+                tipo: "senha"
+            });
         }
 
+        // Cria token
         const token = jwt.sign(
-                { id_usuario: usuario.id_usuario},
+            {
+                id_usuario: usuario.id_usuario
+            },
+            process.env.JWT_SECRET,
+            {
+                expiresIn: "7d"
+            }
+        );
 
-                process.env.JWT_SECRET,
-                { expiresIn: "7d"}
-            );
-        res.json({
-            token, usuario:{ id_usuario: usuario.id_usuario, nome: usuario.nome, email: usuario.email}
+        // Login realizado com sucesso
+        return res.status(200).json({
+            token,
+            usuario: {
+                id_usuario: usuario.id_usuario,
+                nome: usuario.nome,
+                email: usuario.email
+            }
         });
 
-    } catch(erro) {
-        console.error(erro);
+    } catch (erro) {
+        console.error("ERRO NO LOGIN:", erro);
 
-        res.status(500).json({
-            erro: erro.message
+        return res.status(500).json({
+            erro: "Erro interno ao realizar login."
         });
     }
-
 });
+
 // ==================================================
 // ESQUECI SENHA
 // ==================================================

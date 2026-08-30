@@ -14,6 +14,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
+
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
@@ -22,10 +23,17 @@ export default function Login() {
   });
 
   const [mostrarSenha, setMostrarSenha] = useState(false);
+
   const [carregando, setCarregando] = useState(false);
+
   const [erroLogin, setErroLogin] = useState("");
 
+  // ==================================================
+  // ALTERAÇÃO DOS CAMPOS
+  // ==================================================
+
   function handleChange(e) {
+
     const { name, value } = e.target;
 
     setForm((prev) => ({
@@ -33,16 +41,21 @@ export default function Login() {
       [name]: value,
     }));
 
-    // Limpa a mensagem quando o usuário começar a corrigir
+    // Remove mensagem de erro ao digitar novamente
     if (erroLogin) {
       setErroLogin("");
     }
   }
 
+  // ==================================================
+  // LOGIN
+  // ==================================================
+
   async function handleSubmit(e) {
+
     e.preventDefault();
 
-    // Não permite enviar novamente enquanto estiver carregando
+    // Evita múltiplos cliques
     if (carregando) {
       return;
     }
@@ -51,71 +64,151 @@ export default function Login() {
     setCarregando(true);
 
     try {
+
+      console.log("Tentando fazer login...");
+
       const resposta = await loginUsuario(form);
 
-      /*
-       * IMPORTANTE:
-       * Só consideramos login válido se a API devolver um token.
-       */
+      console.log("Resposta recebida:", resposta);
+
+      // ==================================================
+      // VERIFICA SE O LOGIN FOI REALMENTE REALIZADO
+      // ==================================================
 
       if (!resposta || !resposta.token) {
-        setErroLogin("Email ou senha incorretos.");
+
+        setErroLogin(
+          "Email ou senha incorretos."
+        );
+
         return;
       }
 
-      // Salva o token
+      // ==================================================
+      // SALVA TOKEN
+      // ==================================================
+
       localStorage.setItem(
         "token",
         resposta.token
       );
 
-      // Salva os dados do usuário
+      // ==================================================
+      // SALVA USUÁRIO
+      // ==================================================
+
       if (resposta.usuario) {
+
         localStorage.setItem(
           "usuario",
           JSON.stringify(resposta.usuario)
         );
       }
 
-      /*
-       * Só chega aqui quando o login foi realmente realizado.
-       *
-       * Se o login estiver errado, o código cai no catch
-       * e permanece nesta mesma página.
-       */
+      console.log("Login realizado com sucesso.");
+
+      // ==================================================
+      // SÓ AQUI REDIRECIONA
+      // ==================================================
+
       navigate("/");
 
     } catch (erro) {
-      console.error("Erro no login:", erro);
 
-      /*
-       * QUALQUER ERRO DA API DE LOGIN
-       * mantém o usuário nesta página.
-       */
+      console.error(
+        "Erro ao realizar login:",
+        erro
+      );
 
+      // ==================================================
+      // ERRO RETORNADO PELO BACKEND
+      // ==================================================
+
+      const dadosErro =
+        erro?.response?.data;
+
+      // Email incorreto
+      if (
+        dadosErro?.tipo === "email"
+      ) {
+
+        setErroLogin(
+          "Email incorreto."
+        );
+
+        return;
+      }
+
+      // Senha incorreta
+      if (
+        dadosErro?.tipo === "senha"
+      ) {
+
+        setErroLogin(
+          "Senha incorreta."
+        );
+
+        return;
+      }
+
+      // Backend enviou apenas "erro"
+      if (
+        dadosErro?.erro
+      ) {
+
+        setErroLogin(
+          dadosErro.erro
+        );
+
+        return;
+      }
+
+      // Servidor não respondeu
+      if (!erro?.response) {
+
+        setErroLogin(
+          "Não foi possível conectar ao servidor."
+        );
+
+        return;
+      }
+
+      // Erro genérico
       setErroLogin(
-        erro?.response?.data?.erro ||
-        erro?.response?.data?.message ||
         "Email ou senha incorretos."
       );
 
-      // NÃO usar navigate aqui.
-      // NÃO usar window.location aqui.
     } finally {
+
       setCarregando(false);
+
     }
   }
 
   return (
     <div>
+
       <Header />
 
-      <div className="mt-[22px] bg-[#F4F9FD] px-5 flex items-center justify-center">
+      <div
+        className="
+          mt-[22px]
+          bg-[#F4F9FD]
+          px-5
+          flex
+          items-center
+          justify-center
+        "
+      >
 
         <div className="w-full max-w-md">
 
-          {/* VOLTAR */}
+          {/* =========================================
+              VOLTAR
+          ========================================= */}
+
           <Link to="/">
+
             <button
               type="button"
               className="
@@ -135,24 +228,36 @@ export default function Login() {
                 hover:bg-slate-50
               "
             >
+
               <IoArrowBack size={18} />
+
               Voltar
+
             </button>
+
           </Link>
 
-          {/* CARD */}
+
+          {/* =========================================
+              CARD
+          ========================================= */}
+
           <div
             className="
               rounded-3xl
-              border
-              border-[#e5eaf3]
               bg-white
               p-8
               shadow-xl
+              border
+              border-[#e5eaf3]
             "
           >
 
-            {/* TOPO */}
+
+            {/* =========================================
+                TOPO
+            ========================================= */}
+
             <div className="mb-8 text-center">
 
               <div
@@ -169,11 +274,14 @@ export default function Login() {
                   shadow-lg
                 "
               >
+
                 <IoPersonCircleOutline
                   size={28}
                   color="white"
                 />
+
               </div>
+
 
               <h1
                 className="
@@ -186,18 +294,28 @@ export default function Login() {
                 Entrar
               </h1>
 
+
               <p className="text-sm text-slate-500">
                 Digite suas credenciais para acessar sua conta
               </p>
 
             </div>
 
+
+            {/* =========================================
+                FORMULÁRIO
+            ========================================= */}
+
             <form
               onSubmit={handleSubmit}
               noValidate
             >
 
-              {/* EMAIL */}
+
+              {/* =====================================
+                  EMAIL
+              ===================================== */}
+
               <div className="mb-5">
 
                 <div className="mb-2 flex items-center gap-2">
@@ -219,6 +337,7 @@ export default function Login() {
                   </label>
 
                 </div>
+
 
                 <input
                   id="email"
@@ -250,7 +369,11 @@ export default function Login() {
 
               </div>
 
-              {/* SENHA */}
+
+              {/* =====================================
+                  SENHA
+              ===================================== */}
+
               <div className="mb-5">
 
                 <div className="mb-2 flex items-center gap-2">
@@ -272,6 +395,7 @@ export default function Login() {
                   </label>
 
                 </div>
+
 
                 <div
                   className="
@@ -312,10 +436,13 @@ export default function Login() {
                     "
                   />
 
+
                   <button
                     type="button"
                     onClick={() =>
-                      setMostrarSenha((prev) => !prev)
+                      setMostrarSenha(
+                        (prev) => !prev
+                      )
                     }
                     disabled={carregando}
                     className="
@@ -323,23 +450,22 @@ export default function Login() {
                       py-4
                       disabled:opacity-50
                     "
-                    aria-label={
-                      mostrarSenha
-                        ? "Ocultar senha"
-                        : "Mostrar senha"
-                    }
                   >
 
                     {mostrarSenha ? (
+
                       <IoEyeOffOutline
                         size={20}
                         className="text-slate-500"
                       />
+
                     ) : (
+
                       <IoEyeOutline
                         size={20}
                         className="text-slate-500"
                       />
+
                     )}
 
                   </button>
@@ -348,7 +474,11 @@ export default function Login() {
 
               </div>
 
-              {/* OPÇÕES */}
+
+              {/* =====================================
+                  OPÇÕES
+              ===================================== */}
+
               <div
                 className="
                   mb-6
@@ -377,6 +507,7 @@ export default function Login() {
 
                 </label>
 
+
                 <Link
                   to="/recuperarsenha"
                   className="
@@ -386,13 +517,20 @@ export default function Login() {
                     hover:underline
                   "
                 >
+
                   Esqueceu a senha?
+
                 </Link>
 
               </div>
 
-              {/* ERRO */}
+
+              {/* =====================================
+                  MENSAGEM DE ERRO
+              ===================================== */}
+
               {erroLogin && (
+
                 <p
                   role="alert"
                   className="
@@ -403,11 +541,18 @@ export default function Login() {
                     text-red-500
                   "
                 >
+
                   {erroLogin}
+
                 </p>
+
               )}
 
-              {/* BOTÃO */}
+
+              {/* =====================================
+                  BOTÃO LOGIN
+              ===================================== */}
+
               <button
                 type="submit"
                 disabled={carregando}
@@ -441,7 +586,11 @@ export default function Login() {
 
             </form>
 
-            {/* DIVISOR */}
+
+            {/* =========================================
+                DIVISOR
+            ========================================= */}
+
             <div className="my-6 flex items-center">
 
               <div className="h-px flex-1 bg-[#dbe3f0]" />
@@ -454,12 +603,17 @@ export default function Login() {
 
             </div>
 
-            {/* CADASTRO */}
+
+            {/* =========================================
+                CADASTRO
+            ========================================= */}
+
             <div className="text-center">
 
               <span className="text-slate-500">
                 Não possui uma conta?
               </span>
+
 
               <Link
                 to="/criarconta"
@@ -470,7 +624,9 @@ export default function Login() {
                   hover:underline
                 "
               >
+
                 Criar conta
+
               </Link>
 
             </div>
@@ -480,6 +636,7 @@ export default function Login() {
         </div>
 
       </div>
+
     </div>
   );
 }
