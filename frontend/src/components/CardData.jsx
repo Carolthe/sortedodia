@@ -26,7 +26,8 @@ export default function CardData() {
         />
 
         <span className="text-[15px] font-medium text-slate-800">
-          sexta, 29 de mai. de 2026
+          {/* sexta, 29 de mai. de 2026 */}
+          2026
         </span>
       </div>
 
