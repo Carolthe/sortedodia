@@ -11,9 +11,10 @@ import {
 import Header from "../components/Header";
 import { loginUsuario } from "../api/usuariosServices";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     email: "",
@@ -22,17 +23,17 @@ export default function Login() {
 
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [carregando, setCarregando] = useState(false);
-
-  // Mensagem de erro
   const [erroLogin, setErroLogin] = useState("");
 
   function handleChange(e) {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
 
-    // Remove a mensagem quando o usuário começar a corrigir
+    setForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+
+    // Remove a mensagem de erro quando o usuário começar a corrigir
     if (erroLogin) {
       setErroLogin("");
     }
@@ -45,40 +46,63 @@ export default function Login() {
     setCarregando(true);
 
     try {
-
       const resposta = await loginUsuario(form);
+
+      // Verifica se a API realmente retornou os dados esperados
+      if (!resposta?.token) {
+        throw new Error("Resposta inválida do servidor.");
+      }
 
       localStorage.setItem(
         "token",
         resposta.token
       );
 
-      localStorage.setItem(
-        "usuario",
-        JSON.stringify(resposta.usuario)
-      );
+      if (resposta.usuario) {
+        localStorage.setItem(
+          "usuario",
+          JSON.stringify(resposta.usuario)
+        );
+      }
 
-      window.location.href = "/";
+      // Redirecionamento usando React Router
+      navigate("/");
 
     } catch (erro) {
-
       console.error("Erro ao fazer login:", erro);
 
-      setErroLogin(
-        erro.response?.data?.erro ||
-        "Email ou senha incorretos."
-      );
+      /*
+       * Se o backend enviar:
+       *
+       * {
+       *   erro: "Email ou senha incorretos"
+       * }
+       *
+       * essa mensagem será exibida.
+       */
+
+      const mensagem =
+        erro?.response?.data?.erro ||
+        erro?.response?.data?.message ||
+        erro?.message ||
+        "Email ou senha incorretos.";
+
+      // Evita mostrar mensagens técnicas para o usuário
+      if (
+        mensagem === "Resposta inválida do servidor."
+      ) {
+        setErroLogin("Não foi possível realizar o login.");
+      } else {
+        setErroLogin(mensagem);
+      }
 
     } finally {
-
       setCarregando(false);
-
     }
   }
 
   return (
     <div>
-
       <Header />
 
       <div className="mt-[22px] bg-[#F4F9FD] px-5 flex items-center justify-center">
@@ -90,12 +114,20 @@ export default function Login() {
             <button
               type="button"
               className="
-                mb-6 flex items-center gap-2
-                rounded-xl border border-[#dbe3f0]
-                bg-white px-4 py-2
+                mb-6
+                flex
+                items-center
+                gap-2
+                rounded-xl
+                border
+                border-[#dbe3f0]
+                bg-white
+                px-4
+                py-2
                 text-[#062272]
                 shadow-sm
-                transition hover:bg-slate-50
+                transition
+                hover:bg-slate-50
               "
             >
               <IoArrowBack size={18} />
@@ -107,10 +139,11 @@ export default function Login() {
           <div
             className="
               rounded-3xl
+              border
+              border-[#e5eaf3]
               bg-white
               p-8
               shadow-xl
-              border border-[#e5eaf3]
             "
           >
 
@@ -119,9 +152,13 @@ export default function Login() {
 
               <div
                 className="
-                  mx-auto mb-4
-                  flex h-13 w-13
-                  items-center justify-center
+                  mx-auto
+                  mb-4
+                  flex
+                  h-13
+                  w-13
+                  items-center
+                  justify-center
                   rounded-2xl
                   bg-[#062272]
                   shadow-lg
@@ -162,13 +199,21 @@ export default function Login() {
                     className="text-[#062272]"
                   />
 
-                  <label className="text-sm font-medium text-slate-700">
+                  <label
+                    htmlFor="email"
+                    className="
+                      text-sm
+                      font-medium
+                      text-slate-700
+                    "
+                  >
                     Email
                   </label>
 
                 </div>
 
                 <input
+                  id="email"
                   type="email"
                   name="email"
                   value={form.email}
@@ -177,8 +222,10 @@ export default function Login() {
                   placeholder="Seu email"
                   required
                   className="
-                    w-full rounded-xl
-                    border border-[#dbe3f0]
+                    w-full
+                    rounded-xl
+                    border
+                    border-[#dbe3f0]
                     bg-white
                     p-4
                     text-slate-800
@@ -203,7 +250,14 @@ export default function Login() {
                     className="text-[#062272]"
                   />
 
-                  <label className="text-sm font-medium text-slate-700">
+                  <label
+                    htmlFor="senha"
+                    className="
+                      text-sm
+                      font-medium
+                      text-slate-700
+                    "
+                  >
                     Senha
                   </label>
 
@@ -211,9 +265,11 @@ export default function Login() {
 
                 <div
                   className="
-                    flex items-center
+                    flex
+                    items-center
                     rounded-xl
-                    border border-[#dbe3f0]
+                    border
+                    border-[#dbe3f0]
                     bg-white
                     shadow-sm
                     focus-within:border-[#062272]
@@ -223,6 +279,7 @@ export default function Login() {
                 >
 
                   <input
+                    id="senha"
                     type={
                       mostrarSenha
                         ? "text"
@@ -246,9 +303,18 @@ export default function Login() {
                   <button
                     type="button"
                     onClick={() =>
-                      setMostrarSenha(!mostrarSenha)
+                      setMostrarSenha((prev) => !prev)
                     }
-                    className="px-4"
+                    className="
+                      px-4
+                      py-4
+                      outline-none
+                    "
+                    aria-label={
+                      mostrarSenha
+                        ? "Ocultar senha"
+                        : "Mostrar senha"
+                    }
                   >
 
                     {mostrarSenha ? (
@@ -281,7 +347,8 @@ export default function Login() {
 
                 <label
                   className="
-                    flex items-center
+                    flex
+                    items-center
                     gap-2
                     text-sm
                     text-slate-600
@@ -314,6 +381,7 @@ export default function Login() {
               {/* MENSAGEM DE ERRO */}
               {erroLogin && (
                 <p
+                  role="alert"
                   className="
                     mb-4
                     text-center
@@ -331,7 +399,8 @@ export default function Login() {
                 type="submit"
                 disabled={carregando}
                 className="
-                  flex w-full
+                  flex
+                  w-full
                   items-center
                   justify-center
                   gap-2
@@ -343,6 +412,7 @@ export default function Login() {
                   shadow-lg
                   transition
                   hover:bg-[#0a318f]
+                  disabled:cursor-not-allowed
                   disabled:opacity-50
                 "
               >
@@ -397,7 +467,6 @@ export default function Login() {
         </div>
 
       </div>
-
     </div>
   );
 }
