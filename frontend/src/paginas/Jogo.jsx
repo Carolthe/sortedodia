@@ -16,11 +16,8 @@ export default function Jogo() {
         const token = localStorage.getItem("token");
 
         if (!token) {
-
             navigate("/login");
-
         }
-
     }, []);
 
     return (

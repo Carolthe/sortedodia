@@ -5,17 +5,8 @@ import Header from "../components/Header";
 import { Link } from "react-router-dom";
 import PlayButton from "../components/PlayButton";
 //import Benefits from "../components/Benefits";
-import {
-    Dice5,
-    BarChart3,
-    BadgeDollarSign,
-    CalendarDays,
-    Wallet,
-    Landmark,
-} from "lucide-react";
-
+import { Dice5, BarChart3, BadgeDollarSign, CalendarDays, Wallet, Landmark } from "lucide-react";
 import ServiceCard from "../components/ServiceCard";
-
 
 export default function Home() {
     const services = [
@@ -63,45 +54,10 @@ export default function Home() {
         },
     ];
 
-    // const paginas = [
-    //     {
-    //         link: "/jogo",
-    //         imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780248365/doisbi_wgsba8.png",
-    //         alt: "Jogo do Bicho"
-    //     },
-    //     {
-    //         link: "/resultados",
-    //         imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780070304/res_eua4dm.png",
-    //         alt: "Resultados"
-    //     },
-    //     {
-    //         link: "/cotacao",
-    //         imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780235379/co_ejflry.png",
-    //         alt: "Cotação"
-    //     },
-    //     {
-    //         link: "/horario",
-    //         imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780247765/ChatGPT_Image_31_05_2026_18_15_30_zyqczg.png",
-    //         alt: "Próximos Resultados"
-    //     },
-    //     {
-    //         link: "/saque",
-    //         imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780235599/sa_oqmzwq.png",
-    //         alt: "Saque"
-    //     },
-    //     {
-    //         link: "/pix",
-    //         imagem: "https://res.cloudinary.com/do4p13i1a/image/upload/v1780235741/pi_hciizr.png",
-    //         alt: "Pix"
-    //     }
-    // ];
-
     return (
         <div className="min-h-screen bg-gradient-to-b from-[#F4F9FD] to-[#E8EFF9]">
 
             <Header />
-
-            {/* <Carousel /> */}
 
             <main className="max-w-7xl mx-auto px-4 pt-5">
 
@@ -151,49 +107,6 @@ export default function Home() {
                         ))}
                     </div>
                 </div>
-
-                {/* Grid de páginas */}
-                {/* <section
-                    className="
-                        relative
-                        bg-white
-                        rounded-3xl
-                        shadow-[0_10px_40px_-15px_rgba(6,34,114,0.25)]
-                        border border-gray-100
-                        p-6 sm:p-8
-                    "
-                >
-
-                    <div
-                        className="
-                            grid
-                            grid-cols-2
-                            sm:grid-cols-3
-                            lg:grid-cols-6
-                            gap-5 sm:gap-6
-                        "
-                    >
-
-                        {paginas.map((pagina) => (
-
-                            <Link
-                                key={pagina.alt}
-                                to={pagina.link}
-                                className="group"
-                            >
-
-                                <CardPaginas
-                                    imagem={pagina.imagem}
-                                    alt={pagina.alt}
-                                />
-
-                            </Link>
-
-                        ))}
-
-                    </div>
-
-                </section> */}
 
                 <div className="mt-10">
 

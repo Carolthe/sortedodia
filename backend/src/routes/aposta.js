@@ -8,6 +8,7 @@ router.post("/", auth, async (req, res) => {
     const conexao = await db.getConnection();
 
     try {
+
         const {
             data_jogo,
             extracao,
@@ -23,6 +24,7 @@ router.post("/", auth, async (req, res) => {
         // ==========================
         // Validações
         // ==========================
+
         if (!extracao) {
             return res.status(400).json({
                 erro: "Informe a extração."
@@ -66,6 +68,7 @@ router.post("/", auth, async (req, res) => {
         }
 
         for (const numero of numeros) {
+
             if (!/^\d{4}$/.test(numero)) {
 
                 return res.status(400).json({
@@ -75,41 +78,96 @@ router.post("/", auth, async (req, res) => {
         }
 
         // ==========================
-        // Transação
+        // Inicia transação
         // ==========================
 
         await conexao.beginTransaction();
 
-        const [aposta] = await conexao.query( 
-            `INSERT INTO apostas(
-            id_usuario,
-            data_jogo,
-            extracao,
-            modalidade,
-            colocacao,
-            valor) VALUES (?,?,?,?,?,?)`,
-                [id_usuario,
+        // ==========================
+        // Verifica saldo do usuário
+        // ==========================
+
+        const [usuarios] = await conexao.query(
+            `
+            SELECT saldo
+            FROM usuarios
+            WHERE id_usuario = ?
+            FOR UPDATE
+            `,
+            [id_usuario]
+        );
+
+        if (!usuarios.length) {
+
+            await conexao.rollback();
+
+            return res.status(404).json({
+                erro: "Usuário não encontrado."
+            });
+        }
+
+        const saldo = Number(usuarios[0].saldo || 0);
+
+        // Usuário precisa ter MAIS de R$ 10,00
+        if (saldo <= 10) {
+
+            await conexao.rollback();
+
+            return res.status(400).json({
+                erro: "Você precisa ter mais de R$ 10,00 de saldo para realizar uma aposta."
+            });
+        }
+
+        // ==========================
+        // Cria aposta
+        // ==========================
+
+        const [aposta] = await conexao.query(
+            `
+            INSERT INTO apostas(
+                id_usuario,
+                data_jogo,
+                extracao,
+                modalidade,
+                colocacao,
+                valor
+            )
+            VALUES (?,?,?,?,?,?)
+            `,
+            [
+                id_usuario,
                 data_jogo,
                 extracao,
                 modalidade,
                 colocacao,
                 Number(valor)
-                ]);
+            ]
+        );
 
         const id_aposta = aposta.insertId;
+
+        // ==========================
+        // Salva números da aposta
+        // ==========================
 
         for (const numero of numeros) {
 
             await conexao.query(
-                `INSERT INTO aposta_numeros
-                (id_aposta,
-                numero)
-                VALUES (?,?)`,
+                `
+                INSERT INTO aposta_numeros
+                (id_aposta, numero)
+                VALUES (?,?)
+                `,
                 [
-                id_aposta,
-                numero
+                    id_aposta,
+                    numero
                 ]
-            )}
+            );
+        }
+
+        // ==========================
+        // Confirma transação
+        // ==========================
 
         await conexao.commit();
 
@@ -117,6 +175,7 @@ router.post("/", auth, async (req, res) => {
 
             mensagem: "Aposta realizada com sucesso.",
             id_aposta
+
         });
 
     } catch (erro) {
@@ -128,10 +187,13 @@ router.post("/", auth, async (req, res) => {
         res.status(500).json({
 
             erro: "Erro interno do servidor."
+
         });
 
     } finally {
+
         conexao.release();
+
     }
 
 });
@@ -144,11 +206,13 @@ router.get("/minhas", auth, async (req, res) => {
 
         const [apostas] = await db.query(
 
-            ` SELECT
-            a.id_aposta,
-            a.modalidade,
-            a.extracao,
-            a.criado_em,
+            `
+            SELECT
+                a.id_aposta,
+                a.modalidade,
+                a.extracao,
+                a.criado_em,
+
                 GROUP_CONCAT(
                     an.numero
                     ORDER BY an.numero
@@ -168,7 +232,8 @@ router.get("/minhas", auth, async (req, res) => {
                 a.extracao,
                 a.criado_em
 
-            ORDER BY a.criado_em DESC`,
+            ORDER BY a.criado_em DESC
+            `,
 
             [id_usuario]
         );
@@ -180,6 +245,7 @@ router.get("/minhas", auth, async (req, res) => {
             numeros: aposta.numeros
                 ? aposta.numeros.split(",")
                 : []
+
         }));
 
         res.json(resultado);
@@ -191,8 +257,12 @@ router.get("/minhas", auth, async (req, res) => {
         res.status(500).json({
 
             erro: "Erro ao buscar apostas."
+
         });
+
     }
+
 });
 
 module.exports = router;
+
