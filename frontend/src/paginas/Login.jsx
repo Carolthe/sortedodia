@@ -33,7 +33,7 @@ export default function Login() {
       [name]: value,
     }));
 
-    // Remove a mensagem de erro quando o usuário começar a corrigir
+    // Limpa a mensagem quando o usuário começar a corrigir
     if (erroLogin) {
       setErroLogin("");
     }
@@ -42,22 +42,34 @@ export default function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
 
+    // Não permite enviar novamente enquanto estiver carregando
+    if (carregando) {
+      return;
+    }
+
     setErroLogin("");
     setCarregando(true);
 
     try {
       const resposta = await loginUsuario(form);
 
-      // Verifica se a API realmente retornou os dados esperados
-      if (!resposta?.token) {
-        throw new Error("Resposta inválida do servidor.");
+      /*
+       * IMPORTANTE:
+       * Só consideramos login válido se a API devolver um token.
+       */
+
+      if (!resposta || !resposta.token) {
+        setErroLogin("Email ou senha incorretos.");
+        return;
       }
 
+      // Salva o token
       localStorage.setItem(
         "token",
         resposta.token
       );
 
+      // Salva os dados do usuário
       if (resposta.usuario) {
         localStorage.setItem(
           "usuario",
@@ -65,37 +77,30 @@ export default function Login() {
         );
       }
 
-      // Redirecionamento usando React Router
+      /*
+       * Só chega aqui quando o login foi realmente realizado.
+       *
+       * Se o login estiver errado, o código cai no catch
+       * e permanece nesta mesma página.
+       */
       navigate("/");
 
     } catch (erro) {
-      console.error("Erro ao fazer login:", erro);
+      console.error("Erro no login:", erro);
 
       /*
-       * Se o backend enviar:
-       *
-       * {
-       *   erro: "Email ou senha incorretos"
-       * }
-       *
-       * essa mensagem será exibida.
+       * QUALQUER ERRO DA API DE LOGIN
+       * mantém o usuário nesta página.
        */
 
-      const mensagem =
+      setErroLogin(
         erro?.response?.data?.erro ||
         erro?.response?.data?.message ||
-        erro?.message ||
-        "Email ou senha incorretos.";
+        "Email ou senha incorretos."
+      );
 
-      // Evita mostrar mensagens técnicas para o usuário
-      if (
-        mensagem === "Resposta inválida do servidor."
-      ) {
-        setErroLogin("Não foi possível realizar o login.");
-      } else {
-        setErroLogin(mensagem);
-      }
-
+      // NÃO usar navigate aqui.
+      // NÃO usar window.location aqui.
     } finally {
       setCarregando(false);
     }
@@ -187,7 +192,10 @@ export default function Login() {
 
             </div>
 
-            <form onSubmit={handleSubmit}>
+            <form
+              onSubmit={handleSubmit}
+              noValidate
+            >
 
               {/* EMAIL */}
               <div className="mb-5">
@@ -221,6 +229,7 @@ export default function Login() {
                   autoComplete="email"
                   placeholder="Seu email"
                   required
+                  disabled={carregando}
                   className="
                     w-full
                     rounded-xl
@@ -235,6 +244,7 @@ export default function Login() {
                     focus:border-[#062272]
                     focus:ring-2
                     focus:ring-[#062272]/20
+                    disabled:bg-slate-50
                   "
                 />
 
@@ -291,12 +301,14 @@ export default function Login() {
                     autoComplete="current-password"
                     placeholder="Digite sua senha"
                     required
+                    disabled={carregando}
                     className="
                       flex-1
                       bg-transparent
                       p-4
                       text-slate-800
                       outline-none
+                      disabled:bg-slate-50
                     "
                   />
 
@@ -305,10 +317,11 @@ export default function Login() {
                     onClick={() =>
                       setMostrarSenha((prev) => !prev)
                     }
+                    disabled={carregando}
                     className="
                       px-4
                       py-4
-                      outline-none
+                      disabled:opacity-50
                     "
                     aria-label={
                       mostrarSenha
@@ -378,7 +391,7 @@ export default function Login() {
 
               </div>
 
-              {/* MENSAGEM DE ERRO */}
+              {/* ERRO */}
               {erroLogin && (
                 <p
                   role="alert"
@@ -386,7 +399,7 @@ export default function Login() {
                     mb-4
                     text-center
                     text-sm
-                    font-medium
+                    font-semibold
                     text-red-500
                   "
                 >
