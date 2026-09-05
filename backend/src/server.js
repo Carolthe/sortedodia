@@ -6,6 +6,9 @@ const db = require("./config/database");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
+// Confiar no proxy do Railway
+app.set("trust proxy", 1);
+
 app.use(helmet());
 
 app.use(rateLimit({
