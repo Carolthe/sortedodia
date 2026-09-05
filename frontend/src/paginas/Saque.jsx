@@ -15,527 +15,391 @@ import CardVoltar from "../components/CardVoltar";
 import { useUsuario } from "../context/useUsuario";
 import api from "../api/api";
 
+const SAQUE_MINIMO = 0.10;
 
 export default function Saque() {
 
-
     const { usuario, atualizarUsuario } = useUsuario();
 
-
     const [valor, setValor] = useState("");
-
     const [nomeTitular, setNomeTitular] = useState("");
-
     const [tipoDocumento, setTipoDocumento] = useState("CPF");
-
     const [cpfTitular, setCpfTitular] = useState("");
-
     const [tipoChave, setTipoChave] = useState("CPF");
-
     const [chavePix, setChavePix] = useState("");
-
     const [carregando, setCarregando] = useState(false);
-
-
-
 
     async function solicitarSaque() {
 
+        if (carregando) {
+            return;
+        }
 
         const valorNumerico = Number(valor);
 
+        // ======================================
+        // VALIDAÇÕES
+        // ======================================
 
+        if (
+            !Number.isFinite(valorNumerico) ||
+            valorNumerico <= 0
+        ) {
 
-        if (!valorNumerico) {
-
-            alert("Informe o valor do saque.");
+            alert("Informe um valor válido.");
             return;
-
         }
 
+        if (valorNumerico < SAQUE_MINIMO) { alert("O saque mínimo é R$ 0,10."); return; }
 
-
-        if (valorNumerico < 0.1) {
-
-            alert("O saque mínimo é R$00,10.");
-            return;
-
-        }
-
-
-
-        if (valorNumerico > Number(usuario.saldo)) {
+        if (
+            !usuario ||
+            Number(usuario.saldo) < valorNumerico
+        ) {
 
             alert("Saldo insuficiente.");
             return;
-
         }
 
+        if (!nomeTitular.trim()) {
 
+            alert(
+                "Informe o nome completo do titular."
+            );
 
-        if (
-            !nomeTitular ||
-            !cpfTitular ||
-            !chavePix
-        ) {
-
-            alert("Preencha todos os dados.");
             return;
-
         }
 
+        if (!cpfTitular.trim()) {
 
+            alert(
+                `Informe o ${tipoDocumento}.`
+            );
+
+            return;
+        }
+
+        if (!chavePix.trim()) {
+
+            alert(
+                "Informe a chave PIX."
+            );
+
+            return;
+        }
 
         try {
 
-
             setCarregando(true);
 
+            const resposta = await api.post(
+                "/saques",
+                {
+                    valor: Number(
+                        valorNumerico.toFixed(2)
+                    ),
 
+                    nome_titular:
+                        nomeTitular.trim(),
 
-            await api.post("/saques", {
+                    tipo_documento:
+                        tipoDocumento,
 
+                    cpf_titular:
+                        cpfTitular.trim(),
 
-                valor: valorNumerico,
+                    tipo_chave:
+                        tipoChave,
 
-                nome_titular: nomeTitular,
-
-                cpf_titular: cpfTitular,
-
-                tipo_chave: tipoChave,
-
-                chave_pix: chavePix
-
-
-            });
-
-
+                    chave_pix:
+                        chavePix.trim()
+                }
+            );
 
             await atualizarUsuario();
 
-
-
             alert(
+                resposta.data?.mensagem ||
                 "Saque solicitado com sucesso!"
             );
 
-
-
             setValor("");
-
             setNomeTitular("");
-
             setCpfTitular("");
-
-
             setChavePix("");
-
-
 
         } catch (error) {
 
-
-            alert(
-
-                error.response?.data?.erro ||
-
-                "Erro ao solicitar saque."
-
+            console.error(
+                "Erro ao solicitar saque:",
+                error
             );
 
+            alert(
+                error.response?.data?.erro ||
+                "Erro ao solicitar saque."
+            );
 
         } finally {
 
             setCarregando(false);
-
         }
-
-
     }
-
-
-
 
     return (
 
         <div className="min-h-screen bg-slate-100">
 
-
             <Header />
-
 
             <CardVoltar title="Faça seu saque" />
 
-
-
             <div className="px-5 py-5">
 
-
                 <CardSaldo
-
                     saldo={
-
                         usuario?.saldo?.toLocaleString(
-
                             "pt-BR",
-
                             {
-
                                 style: "currency",
-
                                 currency: "BRL"
-
                             }
-
-                        )
-
-                        || "R$ 0,00"
-
+                        ) || "R$ 0,00"
                     }
-
                 />
-
 
             </div>
 
-
-
-
             <div className="px-5 pb-10">
 
-
                 <div className="
-rounded-3xl
-bg-white
-shadow-xl
-p-5
-">
-
+                    rounded-3xl
+                    bg-white
+                    shadow-xl
+                    p-5
+                ">
 
                     {/* CABEÇALHO */}
 
-
                     <div className="
-flex
-items-center
-gap-3
-mb-6
-">
-
+                        flex
+                        items-center
+                        gap-3
+                        mb-6
+                    ">
 
                         <div className="
-rounded-2xl
-bg-blue-100
-p-3
-">
-
+                            rounded-2xl
+                            bg-blue-100
+                            p-3
+                        ">
 
                             <Wallet
-
                                 size={25}
-
                                 className="text-[#062272]"
-
                             />
 
-
                         </div>
-
-
 
                         <div>
 
-
                             <h2 className="
-text-xl
-font-bold
-text-gray-800
-">
-
+                                text-xl
+                                font-bold
+                                text-gray-800
+                            ">
                                 Saque via PIX
-
                             </h2>
 
-
-                            <p className="
-text-sm
-text-gray-500
-">
-
-                                Valor mínimo R$35,00
-
-                            </p>
-
+                            <p className=" text-sm text-gray-500 "> Valor mínimo R$ 0,10 </p>
 
                         </div>
 
-
                     </div>
-
-
-
-
 
                     {/* VALOR */}
 
-
                     <label className="
-text-sm
-font-semibold
-text-gray-700
-">
-
+                        text-sm
+                        font-semibold
+                        text-gray-700
+                    ">
                         Valor do saque
-
                     </label>
 
-
-
                     <div className="
-mt-2
-flex
-rounded-2xl
-border
-bg-gray-50
-overflow-hidden
-">
-
+                        mt-2
+                        flex
+                        rounded-2xl
+                        border
+                        bg-gray-50
+                        overflow-hidden
+                    ">
 
                         <div className="
-px-4
-flex
-items-center
-bg-gray-100
-font-bold
-">
-
+                            px-4
+                            flex
+                            items-center
+                            bg-gray-100
+                            font-bold
+                        ">
                             R$
-
                         </div>
 
-
-
                         <input
-
                             type="number"
-
+                            min={SAQUE_MINIMO}
+                            step="0.01"
                             value={valor}
-
                             onChange={(e) => setValor(e.target.value)}
-
-                            placeholder="35,00"
-
+                            placeholder="0,10"
                             className="
-flex-1
-px-4
-py-4
-bg-transparent
-outline-none
-text-lg
-"
-
+        flex-1
+        px-4
+        py-4
+        bg-transparent
+        outline-none
+        text-lg
+    "
                         />
 
-
                     </div>
-
-
-
-
-
-
-
 
                     {/* TITULAR */}
 
-
-
                     <h3 className="
-mt-7
-mb-3
-font-bold
-text-gray-800
-">
-
+                        mt-7
+                        mb-3
+                        font-bold
+                        text-gray-800
+                    ">
                         Dados do titular
-
                     </h3>
 
-
-
                     <div className="
-flex
-items-center
-rounded-2xl
-border
-bg-gray-50
-overflow-hidden
-">
+                        flex
+                        items-center
+                        rounded-2xl
+                        border
+                        bg-gray-50
+                        overflow-hidden
+                    ">
 
-
-                        <div className="
-px-4
-">
-
+                        <div className="px-4">
                             <User size={19} />
-
                         </div>
 
-
-
                         <input
-
                             value={nomeTitular}
-
-                            onChange={(e) => setNomeTitular(e.target.value)}
-
+                            onChange={(e) =>
+                                setNomeTitular(e.target.value)
+                            }
                             placeholder="Nome completo"
-
                             className="
-flex-1
-py-4
-bg-transparent
-outline-none
-"
-
+                                flex-1
+                                py-4
+                                bg-transparent
+                                outline-none
+                            "
                         />
-
 
                     </div>
 
-
-
-
-
-
-
-
                     <div className="
-mt-3
-flex
-gap-3
-">
-
+                        mt-3
+                        flex
+                        gap-3
+                    ">
 
                         <select
-
                             value={tipoDocumento}
-
-                            onChange={(e) => setTipoDocumento(e.target.value)}
-
+                            onChange={(e) =>
+                                setTipoDocumento(e.target.value)
+                            }
                             className="
-rounded-2xl
-border
-bg-gray-50
-px-4
-outline-none
-"
-
-
+                                rounded-2xl
+                                border
+                                bg-gray-50
+                                px-4
+                                outline-none
+                            "
                         >
 
-                            <option>CPF</option>
+                            <option value="CPF">
+                                CPF
+                            </option>
 
-                            <option>CNPJ</option>
-
+                            <option value="CNPJ">
+                                CNPJ
+                            </option>
 
                         </select>
 
-
-
-
-
                         <div className="
-flex-1
-flex
-items-center
-border
-rounded-2xl
-bg-gray-50
-overflow-hidden
-">
-
+                            flex-1
+                            flex
+                            items-center
+                            border
+                            rounded-2xl
+                            bg-gray-50
+                            overflow-hidden
+                        ">
 
                             <div className="px-4">
-
                                 <FileText size={18} />
-
                             </div>
 
-
                             <input
-
                                 value={cpfTitular}
-
-                                onChange={(e) => setCpfTitular(e.target.value)}
-
-                                placeholder="CPF do titular"
-
+                                onChange={(e) =>
+                                    setCpfTitular(e.target.value)
+                                }
+                                placeholder={
+                                    tipoDocumento === "CPF"
+                                        ? "CPF do titular"
+                                        : "CNPJ do titular"
+                                }
                                 className="
-flex-1
-py-4
-bg-transparent
-outline-none
-"
-
+                                    flex-1
+                                    py-4
+                                    bg-transparent
+                                    outline-none
+                                "
                             />
-
 
                         </div>
 
-
                     </div>
-
-
-
-
-
-
-
-
 
                     {/* PIX */}
 
-
-
                     <h3 className="
-mt-7
-mb-3
-font-bold
-text-gray-800
-">
-
+                        mt-7
+                        mb-3
+                        font-bold
+                        text-gray-800
+                    ">
                         Dados PIX
-
                     </h3>
 
-
-
-
-
                     <div className="
-flex
-gap-3
-">
-
+                        flex
+                        gap-3
+                    ">
 
                         <select
-
                             value={tipoChave}
-
-                            onChange={(e) => setTipoChave(e.target.value)}
-
+                            onChange={(e) =>
+                                setTipoChave(e.target.value)
+                            }
                             className="
-rounded-2xl
-border
-bg-blue-50
-px-3
-outline-none
-"
-
-
+                                rounded-2xl
+                                border
+                                bg-blue-50
+                                px-3
+                                outline-none
+                            "
                         >
-
 
                             <option value="CPF">
                                 CPF
@@ -554,139 +418,87 @@ outline-none
                             </option>
 
                             <option value="PIX_CODE">
-                                Pix Aleatório</option>
-
+                                Pix Aleatório
+                            </option>
 
                         </select>
 
-
-
-
-
                         <div className="
-flex
-flex-1
-items-center
-border
-rounded-2xl
-bg-gray-50
-overflow-hidden
-">
-
+                            flex
+                            flex-1
+                            items-center
+                            border
+                            rounded-2xl
+                            bg-gray-50
+                            overflow-hidden
+                        ">
 
                             <div className="px-4">
-
                                 <CreditCard size={18} />
-
                             </div>
-
-
 
                             <input
-
                                 value={chavePix}
-
-                                onChange={(e) => setChavePix(e.target.value)}
-
+                                onChange={(e) =>
+                                    setChavePix(e.target.value)
+                                }
                                 placeholder="Chave PIX"
-
                                 className="
-flex-1
-py-4
-bg-transparent
-outline-none
-"
-
-
-
+                                    flex-1
+                                    py-4
+                                    bg-transparent
+                                    outline-none
+                                "
                             />
 
-
-
                             <div className="px-4">
-
                                 <Lock size={16} />
-
                             </div>
-
-
 
                         </div>
 
-
-
                     </div>
 
-
-
-
-
-
-
+                    {/* BOTÃO */}
 
                     <button
-
                         onClick={solicitarSaque}
-
                         disabled={carregando}
-
                         className="
-mt-8
-w-full
-rounded-2xl
-bg-gradient-to-r
-from-[#062272]
-to-[#0b3fb4]
-py-4
-text-white
-font-bold
-text-lg
-shadow-lg
-transition
-hover:scale-[1.02]
-disabled:opacity-60
-flex
-items-center
-justify-center
-gap-2
-"
-
+                            mt-8
+                            w-full
+                            rounded-2xl
+                            bg-gradient-to-r
+                            from-[#062272]
+                            to-[#0b3fb4]
+                            py-4
+                            text-white
+                            font-bold
+                            text-lg
+                            shadow-lg
+                            transition
+                            hover:scale-[1.02]
+                            disabled:opacity-60
+                            flex
+                            items-center
+                            justify-center
+                            gap-2
+                        "
                     >
-
 
                         <ArrowDownToLine size={22} />
 
-
-                        {
-
-                            carregando
-
-                                ?
-
-                                "Processando..."
-
-                                :
-
-                                "Solicitar saque"
-
+                        {carregando
+                            ? "Processando..."
+                            : "Solicitar saque"
                         }
-
 
                     </button>
 
-
-
-
                 </div>
-
 
             </div>
 
-
-
         </div>
-
     );
-
-
 }
