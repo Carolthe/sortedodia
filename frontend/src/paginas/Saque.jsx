@@ -55,9 +55,9 @@ export default function Saque() {
 
 
 
-        if (valorNumerico < 35) {
+        if (valorNumerico < 0.1) {
 
-            alert("O saque mínimo é R$35,00.");
+            alert("O saque mínimo é R$00,10.");
             return;
 
         }

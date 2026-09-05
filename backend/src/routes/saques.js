@@ -31,7 +31,7 @@ router.post("/", auth, async (req, res) => {
         const valorNumerico =
             Number(valor);
 
-        if (valorNumerico < 35) {
+        if (valorNumerico < 0.1) {
 
             await conexao.rollback();
 
